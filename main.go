@@ -1,38 +1,47 @@
 package main
 
 import (
+	"io/ioutil"
 	"log"
+	"os"
 
 	"github.com/getlantern/systray"
 	"github.com/getlantern/systray/example/icon"
 )
 
-// AppName ...
-const AppName string = "Discord RPC Tray"
+const (
+	// AppName ...
+	AppName string = "Discord RPC Tray"
+)
 
 func main() {
-	trayExit := func() {
-		log.Println("Quitting...")
+	if os.Getenv("DiscordRPCTrayDebug") == "true" {
+		log.SetOutput(ioutil.Discard)
 	}
+	log.Println("Starting...")
+	log.Println("Syncing config...")
+	InitConfigFile()
+	InitLang()
+	defer ConfigFile.Close()
 
-	systray.Run(trayReady, trayExit)
+	log.Println("Starting tray...")
+	systray.Run(tray, Quit)
 }
 
-func trayReady() {
+func tray() {
 	systray.SetTemplateIcon(icon.Data, icon.Data)
 	systray.SetTitle(AppName)
 	systray.SetTooltip(AppName)
 
 	// Çıkış
-	trayQuitButton := systray.AddMenuItem("Quit", "Quit from the app")
+	trayQuitButton := systray.AddMenuItem(Lang["trayMenuQuit"], Lang["trayMenuQuitDesc"])
 	go func() {
 		<-trayQuitButton.ClickedCh
-		log.Println("Requesting Quit.")
-		Quit()
+		systray.Quit()
 	}()
 }
 
 // Quit ...
 func Quit() {
-	systray.Quit()
+	log.Println("Quitting...")
 }
