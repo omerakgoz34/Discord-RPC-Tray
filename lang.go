@@ -3,7 +3,7 @@ package main
 import "log"
 
 // Lang - Language Strings
-var Lang map[string]string = map[string]string{}
+var Lang = map[string]string{}
 
 // InitLang - Sets the app language
 func InitLang() {
@@ -15,17 +15,17 @@ func InitLang() {
 	default:
 		Lang = langEN
 	}
-	log.Println(Lang)
+	log.Println("Lang: ", Lang)
 }
 
 // Lang English
-var langEN map[string]string = map[string]string{
+var langEN = map[string]string{
 	"trayMenuQuit":     "Quit",
 	"trayMenuQuitDesc": "Quit from the app",
 }
 
 // Lang Turkish
-var langTR map[string]string = map[string]string{
+var langTR = map[string]string{
 	"trayMenuQuit":     "Çık",
 	"trayMenuQuitDesc": "Uygulamadan çık",
 }

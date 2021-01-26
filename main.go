@@ -10,7 +10,7 @@ import (
 
 const (
 	// AppName ...
-	AppName string = "Discord RPC Tray"
+	AppName = "Discord RPC Tray"
 )
 
 func main() {
