@@ -18,13 +18,13 @@ func InitLang() {
 	log.Println(Lang)
 }
 
-// English
+// Lang English
 var langEN map[string]string = map[string]string{
 	"trayMenuQuit":     "Quit",
 	"trayMenuQuitDesc": "Quit from the app",
 }
 
-// Turkish
+// Lang Turkish
 var langTR map[string]string = map[string]string{
 	"trayMenuQuit":     "Çık",
 	"trayMenuQuitDesc": "Uygulamadan çık",

@@ -3,7 +3,6 @@ package main
 import (
 	"io/ioutil"
 	"log"
-	"os"
 
 	"github.com/getlantern/systray"
 	"github.com/getlantern/systray/example/icon"
@@ -15,7 +14,7 @@ const (
 )
 
 func main() {
-	if os.Getenv("DiscordRPCTrayDebug") == "true" {
+	if AppDebug != true {
 		log.SetOutput(ioutil.Discard)
 	}
 	log.Println("Starting...")
@@ -25,10 +24,10 @@ func main() {
 	defer ConfigFile.Close()
 
 	log.Println("Starting tray...")
-	systray.Run(tray, Quit)
+	systray.Run(ui, Quit)
 }
 
-func tray() {
+func ui() {
 	systray.SetTemplateIcon(icon.Data, icon.Data)
 	systray.SetTitle(AppName)
 	systray.SetTooltip(AppName)

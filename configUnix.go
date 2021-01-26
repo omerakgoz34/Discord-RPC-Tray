@@ -1,4 +1,4 @@
-// +build windows
+// +build !windows
 
 package main
 
@@ -13,5 +13,5 @@ func GetConfigPath() string {
 	if err != nil {
 		log.Fatalln("Error on getting user home folder! ", err)
 	}
-	return homeDir + "\\AppData\\Roaming\\" + AppName + "\\"
+	return homeDir + "/.config/" + AppName + "/"
 }

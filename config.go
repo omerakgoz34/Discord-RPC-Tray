@@ -28,7 +28,7 @@ func InitConfigFile() {
 	ConfigFile, err := os.Open(AppConfigFilePath)
 	configFileBuf := bytes.NewBuffer(nil)
 	if err != nil {
-		if !os.IsExist(err) {
+		if os.IsExist(err) != true {
 			log.Println("Config file not found. Creating new config file...")
 			err := os.MkdirAll(AppConfigFileDir, os.ModePerm)
 			if err != nil {
