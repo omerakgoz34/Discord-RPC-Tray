@@ -2,10 +2,10 @@ package main
 
 import "log"
 
-// Lang ...
+// Lang - Language Strings
 var Lang map[string]string = map[string]string{}
 
-// InitLang sets the app language
+// InitLang - Sets the app language
 func InitLang() {
 	switch Config["lang"] {
 	case "en":

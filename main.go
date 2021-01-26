@@ -14,16 +14,22 @@ const (
 )
 
 func main() {
+	// Enable Debug
 	if AppDebug != true {
 		log.SetOutput(ioutil.Discard)
 	}
-	log.Println("Starting...")
-	log.Println("Syncing config...")
-	InitConfigFile()
-	InitLang()
-	defer ConfigFile.Close()
 
-	log.Println("Starting tray...")
+	// Start Core
+	log.Println("> Starting Core <")
+
+	// Sync Configs
+	log.Println("Syncing configs...")
+	InitConfigFile()
+	log.Println("Initializing lang...")
+	InitLang()
+
+	// Start UI
+	log.Println("> Starting UI < ")
 	systray.Run(ui, Quit)
 }
 
@@ -42,5 +48,5 @@ func ui() {
 
 // Quit ...
 func Quit() {
-	log.Println("Quitting...")
+	log.Println("> Quitting <")
 }
