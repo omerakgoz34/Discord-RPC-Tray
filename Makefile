@@ -1,17 +1,17 @@
-BUILD_FLAGS := -ldflags="-s -w"
-DEBUG := -tags=debug
+PROD_FLAGS := -ldflags="-s -w"
+DEBUG_FLAGS := -ldflags="" -tags=debug
 BINARY_NAME := Discord-RPC-Tray.exe
 
 all: build
 
 build:
-	go build -v $(BUILD_FLAGS) $(DEBUG) -o $(BINARY_NAME)
+	go build -v $(DEBUG_FLAGS) -o $(BINARY_NAME)
 
 run: build
 	$(BINARY_NAME)
 
 production:
-	go build -v $(BUILD_FLAGS) -o $(BINARY_NAME)
+	go build -v $(PROD_FLAGS) -o $(BINARY_NAME)
 
 clean:
 ifeq ($(OS),Windows_NT)
