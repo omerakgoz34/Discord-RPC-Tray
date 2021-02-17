@@ -10,7 +10,7 @@ build:
 run: build
 	$(BINARY_NAME)
 
-production:
+release:
 	go build -v $(PROD_FLAGS) -o $(BINARY_NAME)
 
 clean:
