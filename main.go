@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"log"
 
 	"github.com/getlantern/systray"
@@ -14,22 +13,17 @@ const (
 )
 
 func main() {
-	// Enable Debug
-	if AppDebug != true {
-		log.SetOutput(ioutil.Discard)
-	}
+	// Sync Configs
+	InitConfigFile()
 
 	// Start Core
-	log.Println("> Starting Core <")
-
-	// Sync Configs
-	log.Println("Syncing configs...")
-	InitConfigFile()
-	log.Println("Initializing lang...")
+	log.Println(">>> CORE: starting...")
+	log.Println(">>> CORE: initializing the lang...")
 	InitLang()
+	log.Println(">>> CORE: ready.")
 
 	// Start UI
-	log.Println("> Starting UI < ")
+	log.Println(">>> UI: starting...")
 	systray.Run(ui, Quit)
 }
 
@@ -44,9 +38,10 @@ func ui() {
 		<-trayQuitButton.ClickedCh
 		systray.Quit()
 	}()
+	log.Println(">>> UI: ready.")
 }
 
 // Quit ...
 func Quit() {
-	log.Println("> Quitting <")
+	log.Println(">>> CORE: quitting...")
 }

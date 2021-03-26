@@ -1,5 +1,0 @@
-{
-    "gopls": {
-        "build.buildFlags": ["-ldflags=-s,-w", "-tags=windows,debug"]
-    }
-}

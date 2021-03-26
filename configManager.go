@@ -4,8 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
+	"runtime"
 )
 
 var (
@@ -14,11 +16,12 @@ var (
 	// ConfigAppsFileName ...
 	ConfigAppsFileName = "configApps.json"
 	// ConfigDir ...
-	ConfigDir = GetConfigPath()
+	ConfigDir string
 
 	// ConfigDefault ...
 	ConfigDefault = map[string]string{
-		"lang": "en",
+		"debug": "off",
+		"lang":  "en",
 	}
 	// Config - Settings of the app
 	Config = map[string]string{}
@@ -28,12 +31,27 @@ var (
 
 // InitConfigFile ...
 func InitConfigFile() {
+	// Set platform spesific config path
+	if runtime.GOOS == "windows" {
+		homeDir, err := os.UserHomeDir()
+		if err != nil {
+			log.Fatalln("Error on getting user home folder! ", err)
+		}
+		ConfigDir = homeDir + "\\AppData\\Roaming\\" + AppName + "\\"
+	} else {
+		homeDir, err := os.UserHomeDir()
+		if err != nil {
+			log.Fatalln("Error on getting user home folder! ", err)
+		}
+		ConfigDir = homeDir + "/.config/" + AppName + "/"
+	}
+
 	// Config
 	configFileBuf := bytes.NewBuffer(nil)
 	configFile, err := os.Open(ConfigDir + ConfigFileName)
 	if err != nil {
 		// Config file not found
-		if os.IsExist(err) != true {
+		if !os.IsExist(err) {
 			Config = ConfigDefault
 		} else {
 			log.Fatalln("Error on opening config file: ", err)
@@ -49,7 +67,7 @@ func InitConfigFile() {
 	configAppsFileBuf := bytes.NewBuffer(nil)
 	configAppsFile, err := os.Open(ConfigDir + ConfigAppsFileName)
 	if err != nil {
-		if os.IsExist(err) == true {
+		if os.IsExist(err) {
 			log.Fatalln("Error on opening config file: ", err)
 		}
 	} else {
@@ -69,6 +87,12 @@ func InitConfigFile() {
 			Config[key] = ConfigDefault[key]
 		}
 	}
+
+	// Disable Debug
+	if os.Getenv("Discord-RPC-Tray_DEBUG") != "true" && Config["debug"] == "off" {
+		log.SetOutput(ioutil.Discard)
+	}
+
 	log.Println("Config: ", Config)
 	log.Println("ConfigApps: ", ConfigApps)
 	SaveConfig()
