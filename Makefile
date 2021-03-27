@@ -1,4 +1,4 @@
-PROD_FLAGS := -ldflags="-s -w"
+RELEASE_FLAGS := -ldflags="-s -w -H=windowsgui"
 DEBUG_FLAGS := -ldflags="" -tags=debug
 BINARY_NAME := Discord-RPC-Tray.exe
 
@@ -11,7 +11,7 @@ run: build
 	$(BINARY_NAME)
 
 release:
-	go build -v $(PROD_FLAGS) -o $(BINARY_NAME)
+	go build -v $(RELEASE_FLAGS) -o $(BINARY_NAME)
 
 clean:
 ifeq ($(OS),Windows_NT)
