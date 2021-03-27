@@ -35,13 +35,13 @@ func InitConfigFile() {
 	if runtime.GOOS == "windows" {
 		homeDir, err := os.UserHomeDir()
 		if err != nil {
-			log.Fatalln("Error on getting user home folder! ", err)
+			log.Fatalln(Lang["errorGettingHomeFolder"], err)
 		}
 		ConfigDir = homeDir + "\\AppData\\Roaming\\" + AppName + "\\"
 	} else {
 		homeDir, err := os.UserHomeDir()
 		if err != nil {
-			log.Fatalln("Error on getting user home folder! ", err)
+			log.Fatalln(Lang["errorGettingHomeFolder"], err)
 		}
 		ConfigDir = homeDir + "/.config/" + AppName + "/"
 	}
@@ -54,7 +54,7 @@ func InitConfigFile() {
 		if !os.IsExist(err) {
 			Config = ConfigDefault
 		} else {
-			log.Fatalln("Error on opening config file: ", err)
+			log.Fatalln(Lang["errorOpeningConfigFile"], err)
 		}
 	} else {
 		// Get configs from file
@@ -68,7 +68,7 @@ func InitConfigFile() {
 	configAppsFile, err := os.Open(ConfigDir + ConfigAppsFileName)
 	if err != nil {
 		if os.IsExist(err) {
-			log.Fatalln("Error on opening config file: ", err)
+			log.Fatalln(Lang["errorOpeningConfigFile"], err)
 		}
 	} else {
 		// Get configs from file
@@ -100,49 +100,49 @@ func InitConfigFile() {
 
 // SaveConfig - Saves configs to file
 func SaveConfig() {
-	log.Println("Saving config file...")
+	log.Println(Lang["debugConfigSaving"])
 	err := os.MkdirAll(ConfigDir, os.ModePerm)
 	if err != nil {
-		log.Fatalln("Error on creating config folder: ", err)
+		log.Fatalln(Lang["errorCreatingConfigFolder"], err)
 	}
 
 	// Config
 	configFile, err := os.Create(ConfigDir + ConfigFileName)
 	if err != nil {
-		log.Fatalln("Error on opening config file: ", err)
+		log.Fatalln(Lang["errorOpeningConfigFile"], err)
 	}
 	defer configFile.Close()
 	configBytes, err := json.Marshal(Config)
 	if err != nil {
-		log.Fatalln("Error on marshaling config data: ", err)
+		log.Fatalln(Lang["errorMarshalingConfigData"], err)
 	}
 	_, err = configFile.Write(configBytes)
 	if err != nil {
-		log.Fatalln("Error on writing config file: ", err)
+		log.Fatalln(Lang["errorWritingConfigFile"], err)
 	}
 	err = configFile.Sync()
 	if err != nil {
-		log.Fatalln("Error on syncing config file: ", err)
+		log.Fatalln(Lang["errorSyncingConfigFile"], err)
 	}
 
 	// ConfigApps
 	configAppsFile, err := os.Create(ConfigDir + ConfigAppsFileName)
 	if err != nil {
-		log.Fatalln("Error on opening config file: ", err)
+		log.Fatalln(Lang["errorOpeningConfigFile"], err)
 	}
 	defer configAppsFile.Close()
 	configAppsBytes, err := json.Marshal(ConfigApps)
 	if err != nil {
-		log.Fatalln("Error on marshaling config data: ", err)
+		log.Fatalln(Lang["errorMarshalingConfigData"], err)
 	}
 	_, err = configAppsFile.Write(configAppsBytes)
 	if err != nil {
-		log.Fatalln("Error on writing config file: ", err)
+		log.Fatalln(Lang["errorWritingConfigFile"], err)
 	}
 	err = configAppsFile.Sync()
 	if err != nil {
-		log.Fatalln("Error on syncing config file: ", err)
+		log.Fatalln(Lang["errorSyncingConfigFile"], err)
 	}
 
-	log.Println("Config file was saved.")
+	log.Println(Lang["debugConfigSaved"])
 }

@@ -13,17 +13,18 @@ const (
 )
 
 func main() {
-	// Sync Configs
+	// Logging Msg Prefix
+	log.SetPrefix("DEBUG >>> ")
+
+	// Start the Core
+	log.Println("CORE: starting...")
 	InitConfigFile()
-
-	// Start Core
-	log.Println(">>> CORE: starting...")
-	log.Println(">>> CORE: initializing the lang...")
 	InitLang()
-	log.Println(">>> CORE: ready.")
+	log.Println(Lang["debugCoreInitLang"])
+	log.Println(Lang["debugCoreReady"])
 
-	// Start UI
-	log.Println(">>> UI: starting...")
+	// Start the Tray
+	log.Println(Lang["debugTrayStarting"])
 	systray.Run(ui, Quit)
 }
 
@@ -38,10 +39,10 @@ func ui() {
 		<-trayQuitButton.ClickedCh
 		systray.Quit()
 	}()
-	log.Println(">>> UI: ready.")
+	log.Println(Lang["debugTrayReady"])
 }
 
 // Quit ...
 func Quit() {
-	log.Println(">>> CORE: quitting...")
+	log.Println(Lang["debugCoreQuitting"])
 }

@@ -7,7 +7,7 @@ import (
 // Lang - Language Strings
 var Lang = map[string]string{}
 
-// InitLang - Sets the app language
+// InitLang - Set the app language
 func InitLang() {
 	switch Config["lang"] {
 	case "en":
@@ -17,5 +17,5 @@ func InitLang() {
 	default:
 		Lang = LangEN
 	}
-	log.Println("Lang: ", Lang)
+	log.Println("Lang: " + Config["lang"])
 }
