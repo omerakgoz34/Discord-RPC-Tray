@@ -4,12 +4,13 @@ import (
 	"log"
 
 	"github.com/getlantern/systray"
-	"github.com/getlantern/systray/example/icon"
+	"github.com/getlantern/systray/example/icon" // hehe
 )
 
 const (
 	// AppName ...
-	AppName = "Discord RPC Tray"
+	AppName    = "Discord RPC Tray"
+	AppVersion = "v0.0.0"
 )
 
 func main() {
@@ -25,20 +26,41 @@ func main() {
 
 	// Start the Tray
 	log.Println(Lang["debugTrayStarting"])
-	systray.Run(ui, Quit)
+	systray.Run(tray, Quit)
 }
 
-func ui() {
+func tray() {
 	systray.SetTemplateIcon(icon.Data, icon.Data)
 	systray.SetTitle(AppName)
 	systray.SetTooltip(AppName)
 
-	// Çıkış
-	trayQuitButton := systray.AddMenuItem(Lang["trayMenuQuit"], Lang["trayMenuQuitDesc"])
+	// Tray Button - Hide Console
+	trayButtonConsoleHide := systray.AddMenuItem(Lang["trayButtonConsoleHide"], Lang["trayButtonConsoleHideDesc"])
 	go func() {
-		<-trayQuitButton.ClickedCh
+		for {
+			<-trayButtonConsoleHide.ClickedCh
+			ConsoleHide()
+			log.Println(Lang["debugConsoleHide"])
+		}
+	}()
+
+	// Tray Button - Show Console
+	trayButtonConsoleShow := systray.AddMenuItem(Lang["trayButtonConsoleShow"], Lang["trayButtonConsoleShowDesc"])
+	go func() {
+		for {
+			<-trayButtonConsoleShow.ClickedCh
+			ConsoleShow()
+			log.Println(Lang["debugConsoleShow"])
+		}
+	}()
+
+	// Tray Button - Quit
+	trayButtonQuit := systray.AddMenuItem(Lang["trayButtonQuit"], Lang["trayButtonQuitDesc"])
+	go func() {
+		<-trayButtonQuit.ClickedCh
 		systray.Quit()
 	}()
+
 	log.Println(Lang["debugTrayReady"])
 }
 

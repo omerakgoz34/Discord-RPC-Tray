@@ -1,4 +1,4 @@
-RELEASE_FLAGS := -ldflags="-s -w -H=windowsgui"
+RELEASE_FLAGS := -ldflags="-s -w"
 DEBUG_FLAGS := -ldflags="" -tags=debug
 BINARY_NAME := Discord-RPC-Tray.exe
 

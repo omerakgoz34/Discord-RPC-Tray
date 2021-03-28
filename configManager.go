@@ -95,11 +95,11 @@ func InitConfigFile() {
 
 	log.Println("Config: ", Config)
 	log.Println("ConfigApps: ", ConfigApps)
-	SaveConfig()
+	ConfigSave()
 }
 
 // SaveConfig - Saves configs to file
-func SaveConfig() {
+func ConfigSave() {
 	log.Println(Lang["debugConfigSaving"])
 	err := os.MkdirAll(ConfigDir, os.ModePerm)
 	if err != nil {

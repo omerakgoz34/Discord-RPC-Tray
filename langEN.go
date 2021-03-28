@@ -18,12 +18,18 @@ var LangEN = map[string]string{
 	"debugCoreInitLang": "CORE: initialized the lang.",
 	"debugCoreReady":    "CORE: ready.",
 	"debugCoreQuitting": "CORE: quitting...",
+	"debugConsoleHide":  "CORE: hiding console.",
+	"debugConsoleShow":  "CORE: showing console.",
 
 	// Debug - TRAY
 	"debugTrayStarting": "TRAY: starting...",
 	"debugTrayReady":    "TRAY: ready.",
 
 	// Tray Menu
-	"trayMenuQuit":     "Quit",
-	"trayMenuQuitDesc": "Quit the app",
+	"trayButtonConsoleHide":     "Hide Console",
+	"trayButtonConsoleHideDesc": "Hide console of the app",
+	"trayButtonConsoleShow":     "Show Console",
+	"trayButtonConsoleShowDesc": "Show console of the app",
+	"trayButtonQuit":            "Quit",
+	"trayButtonQuitDesc":        "Quit the app",
 }

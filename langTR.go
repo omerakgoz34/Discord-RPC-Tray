@@ -18,12 +18,18 @@ var LangTR = map[string]string{
 	"debugCoreInitLang": "ÇEKİRDEK: dil hazırlandı.",
 	"debugCoreReady":    "ÇEKİRDEK: hazır.",
 	"debugCoreQuitting": "ÇEKİRDEK: çıkış yapılıyor...",
+	"debugConsoleHide":  "ÇEKİRDEK: konsol gizleniyor.",
+	"debugConsoleShow":  "ÇEKİRDEK: konsol gösteriliyor.",
 
 	// Debug - TRAY
-	"debugTrayStarting": "GÖREV ÇUBUĞU SİMGESİ: başlatılıyor...",
-	"debugTrayReady":    "GÖREV ÇUBUĞU SİMGESİ: hazır.",
+	"debugTrayStarting": "GÖREV SİMGESİ: başlatılıyor...",
+	"debugTrayReady":    "GÖREV SİMGESİ: hazır.",
 
 	// Tray Menu
-	"trayMenuQuit":     "Çık",
-	"trayMenuQuitDesc": "Uygulamadan çık",
+	"trayButtonConsoleHide":     "Konsolu Gizle",
+	"trayButtonConsoleHideDesc": "Uygulamanın konsolunu gizle",
+	"trayButtonConsoleShow":     "Konsolu Göster",
+	"trayButtonConsoleShowDesc": "Uygulamanın konsolunu göster",
+	"trayButtonQuit":            "Çık",
+	"trayButtonQuitDesc":        "Uygulamadan çık",
 }
