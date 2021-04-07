@@ -25,11 +25,30 @@ var LangEN = map[string]string{
 	"debugTrayStarting": "TRAY: starting...",
 	"debugTrayReady":    "TRAY: ready.",
 
+	// Debug - UI
+	"debugUIStarting": "UI: starting...",
+
 	// Tray Menu
 	"trayButtonConsoleHide":     "Hide Console",
 	"trayButtonConsoleHideDesc": "Hide console of the app",
 	"trayButtonConsoleShow":     "Show Console",
 	"trayButtonConsoleShowDesc": "Show console of the app",
-	"trayButtonQuit":            "Quit",
 	"trayButtonQuitDesc":        "Quit the app",
+
+	// UI Menu
+	"formAddFirstAppTitle": "Add Your First Discord App!",
+	"formAddNewAppTitle":   "Add New Discord App",
+	"invalidAppID":         "You entered an invalid app ID!",
+
+	// General Strings
+	"application": "Application",
+	"quit":        "Quit",
+	"cancel":      "Cancel",
+	"save":        "Save",
+	"name":        "Name",
+	"id":          "ID",
+	"ok":          "OK",
+	"details":     "Details",
+	"status":      "Status",
+	"start":       "Start",
 }

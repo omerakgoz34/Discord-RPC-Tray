@@ -25,11 +25,30 @@ var LangTR = map[string]string{
 	"debugTrayStarting": "GÖREV SİMGESİ: başlatılıyor...",
 	"debugTrayReady":    "GÖREV SİMGESİ: hazır.",
 
+	// Debug - UI
+	"debugUIStarting": "ARAYÜZ: başlatılıyor...",
+
 	// Tray Menu
 	"trayButtonConsoleHide":     "Konsolu Gizle",
 	"trayButtonConsoleHideDesc": "Uygulamanın konsolunu gizle",
 	"trayButtonConsoleShow":     "Konsolu Göster",
 	"trayButtonConsoleShowDesc": "Uygulamanın konsolunu göster",
-	"trayButtonQuit":            "Çık",
 	"trayButtonQuitDesc":        "Uygulamadan çık",
+
+	// UI Menu
+	"formAddFirstAppTitle": "İlk Discord Uygulamanı Ekle!",
+	"formAddNewAppTitle":   "Yeni Discord Uygulaması Ekle",
+	"invalidAppID":         "Geçersiz bir uygulama kimliği girdin!",
+
+	// General Strings
+	"application": "Uygulama",
+	"quit":        "Çık",
+	"cancel":      "Vazgeç",
+	"save":        "Kaydet",
+	"name":        "İsim",
+	"id":          "Kimlik",
+	"ok":          "Tamam",
+	"details":     "Detaylar",
+	"status":      "Durum",
+	"start":       "Başlat",
 }

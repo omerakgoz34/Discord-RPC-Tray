@@ -46,11 +46,11 @@ func InitConfigFile() {
 		ConfigDir = homeDir + "/.config/" + AppName + "/"
 	}
 
-	// Config
+	// Check Config
 	configFileBuf := bytes.NewBuffer(nil)
 	configFile, err := os.Open(ConfigDir + ConfigFileName)
 	if err != nil {
-		// Config file not found
+		// Config file not found?
 		if !os.IsExist(err) {
 			Config = ConfigDefault
 		} else {
@@ -61,12 +61,13 @@ func InitConfigFile() {
 		io.Copy(configFileBuf, configFile)
 		json.Unmarshal(configFileBuf.Bytes(), &Config)
 	}
-	defer configFile.Close()
+	configFile.Close()
 
-	// ConfigApps
+	// Check ConfigApps
 	configAppsFileBuf := bytes.NewBuffer(nil)
 	configAppsFile, err := os.Open(ConfigDir + ConfigAppsFileName)
 	if err != nil {
+		// Config file not found?
 		if os.IsExist(err) {
 			log.Fatalln(Lang["errorOpeningConfigFile"], err)
 		}
@@ -75,7 +76,7 @@ func InitConfigFile() {
 		io.Copy(configAppsFileBuf, configAppsFile)
 		json.Unmarshal(configAppsFileBuf.Bytes(), &ConfigApps)
 	}
-	defer configAppsFile.Close()
+	configAppsFile.Close()
 
 	// Check for missing entries
 	for key := range ConfigDefault {
@@ -101,8 +102,7 @@ func InitConfigFile() {
 // SaveConfig - Saves configs to file
 func ConfigSave() {
 	log.Println(Lang["debugConfigSaving"])
-	err := os.MkdirAll(ConfigDir, os.ModePerm)
-	if err != nil {
+	if err := os.MkdirAll(ConfigDir, os.ModePerm); err != nil {
 		log.Fatalln(Lang["errorCreatingConfigFolder"], err)
 	}
 
@@ -116,12 +116,10 @@ func ConfigSave() {
 	if err != nil {
 		log.Fatalln(Lang["errorMarshalingConfigData"], err)
 	}
-	_, err = configFile.Write(configBytes)
-	if err != nil {
+	if _, err = configFile.Write(configBytes); err != nil {
 		log.Fatalln(Lang["errorWritingConfigFile"], err)
 	}
-	err = configFile.Sync()
-	if err != nil {
+	if err = configFile.Sync(); err != nil {
 		log.Fatalln(Lang["errorSyncingConfigFile"], err)
 	}
 
@@ -135,12 +133,10 @@ func ConfigSave() {
 	if err != nil {
 		log.Fatalln(Lang["errorMarshalingConfigData"], err)
 	}
-	_, err = configAppsFile.Write(configAppsBytes)
-	if err != nil {
+	if _, err = configAppsFile.Write(configAppsBytes); err != nil {
 		log.Fatalln(Lang["errorWritingConfigFile"], err)
 	}
-	err = configAppsFile.Sync()
-	if err != nil {
+	if err = configAppsFile.Sync(); err != nil {
 		log.Fatalln(Lang["errorSyncingConfigFile"], err)
 	}
 
