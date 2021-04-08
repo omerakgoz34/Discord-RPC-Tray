@@ -39,6 +39,9 @@ var LangEN = map[string]string{
 	"formAddFirstAppTitle": "Add Your First Discord App!",
 	"formAddNewAppTitle":   "Add New Discord App",
 	"invalidAppID":         "You entered an invalid app ID!",
+	"selectApp":            "Select App",
+	"selectedApp":          "Selected App: ",
+	"changeApp":            "Change App",
 
 	// General Strings
 	"application": "Application",
@@ -51,4 +54,7 @@ var LangEN = map[string]string{
 	"details":     "Details",
 	"status":      "Status",
 	"start":       "Start",
+	"select":      "Select",
+	"add":         "Add",
+	"remove":      "Remove",
 }

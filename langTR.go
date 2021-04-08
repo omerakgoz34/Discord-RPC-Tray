@@ -39,6 +39,9 @@ var LangTR = map[string]string{
 	"formAddFirstAppTitle": "İlk Discord Uygulamanı Ekle!",
 	"formAddNewAppTitle":   "Yeni Discord Uygulaması Ekle",
 	"invalidAppID":         "Geçersiz bir uygulama kimliği girdin!",
+	"selectApp":            "Uygulama Seç",
+	"selectedApp":          "Seçili Uygulama: ",
+	"changeApp":            "Uygulamayı Değiştir",
 
 	// General Strings
 	"application": "Uygulama",
@@ -51,4 +54,7 @@ var LangTR = map[string]string{
 	"details":     "Detaylar",
 	"status":      "Durum",
 	"start":       "Başlat",
+	"select":      "Seç",
+	"add":         "Ekle",
+	"remove":      "Kaldır",
 }

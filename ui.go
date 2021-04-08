@@ -10,90 +10,148 @@ import (
 var UI *tview.Application = tview.NewApplication()
 
 func LoopUI() {
+	// UI Elements
 	pages := tview.NewPages()
 	lastPage := ""
+	lastPageModal := ""
+	formAddFirstApp := tview.NewForm()
+	formAddNewApp := tview.NewForm()
+	modalInvalidAppID := tview.NewModal()
+	formAppSelection := tview.NewForm()
+	formRPC := tview.NewForm()
+
+	// Input Infos
+	inputAppName := ""
+	inputAppID := ""
 
 	// UI Page - Add First App
-	isFirstApp := false
-	inputName := ""
-	inputID := ""
-	formAddFirstApp := tview.NewForm().
+	formAddFirstApp = formAddFirstApp.
 		AddInputField(Lang["name"], "", 32, tview.InputFieldMaxLength(32), func(text string) {
-			inputName = text
+			inputAppName = text
 		}).
-		AddInputField(Lang["id"], "", 32, tview.InputFieldMaxLength(18), func(text string) {
-			inputID = text
+		AddInputField(Lang["id"], "", 18, tview.InputFieldMaxLength(18), func(text string) {
+			inputAppID = text
 		}).
 		AddButton(Lang["save"], func() {
-			if _, err := strconv.ParseInt(inputID, 10, 64); err != nil || len(inputID) < 18 {
+			if len(inputAppName) < 1 || len(inputAppID) < 18 {
+				return
+			}
+			if _, err := strconv.ParseInt(inputAppID, 10, 64); err != nil {
 				pages.SwitchToPage("invalidAppID")
+				lastPageModal = "addFirstApp"
 			} else {
-				ConfigApps[inputName] = inputID
+				ConfigApps[inputAppName] = inputAppID
+				Config["selectedApp"] = inputAppName
 				ConfigSave()
+				formRPC.SetTitle(" " + AppName + " - " + Lang["selectedApp"] + Config["selectedApp"] + " ")
 				pages.SwitchToPage("RPC")
 				lastPage = "RPC"
 			}
 		}).
 		AddButton(Lang["quit"], func() {
 			systray.Quit()
-		}).SetCancelFunc(func() {})
-	formAddFirstApp.SetBorder(true).SetTitle(Lang["formAddFirstAppTitle"]).SetTitleAlign(tview.AlignLeft)
+		})
+	formAddFirstApp.SetBorder(true).SetTitle(" " + Lang["formAddFirstAppTitle"] + " - " + AppName + " ").SetTitleAlign(tview.AlignLeft)
 	pages.AddPage("addFirstApp", formAddFirstApp, true, false)
 
 	// UI Page - Add New App
-	formAddNewApp := tview.NewForm().
+	formAddNewApp = formAddNewApp.
 		AddInputField(Lang["name"], "", 32, tview.InputFieldMaxLength(32), func(text string) {
-			inputName = text
+			inputAppName = text
 		}).
-		AddInputField(Lang["id"], "", 32, tview.InputFieldMaxLength(18), func(text string) {
-			inputID = text
+		AddInputField(Lang["id"], "", 18, tview.InputFieldMaxLength(18), func(text string) {
+			inputAppID = text
 		}).
 		AddButton(Lang["save"], func() {
-			if _, err := strconv.ParseInt(inputID, 10, 64); err != nil || len(inputID) < 18 {
+			if len(inputAppName) < 1 || len(inputAppID) < 18 {
+				return
+			}
+			if _, err := strconv.ParseInt(inputAppID, 10, 64); err != nil || len(inputAppID) < 18 {
 				pages.SwitchToPage("invalidAppID")
+				lastPageModal = "addNewApp"
 			} else {
-				ConfigApps[inputName] = inputID
+				ConfigApps[inputAppName] = inputAppID
+				Config["selectedApp"] = inputAppName
 				ConfigSave()
-				pages.SwitchToPage(lastPage)
+				if lastPage == "RPC" {
+					formRPC.SetTitle(" " + AppName + " - " + Lang["selectedApp"] + Config["selectedApp"] + " ")
+				}
+				pages.SwitchToPage("RPC")
+				lastPage = "RPC"
 			}
 		}).
 		AddButton(Lang["cancel"], func() {
 			pages.SwitchToPage(lastPage)
-		}).SetCancelFunc(func() {})
-	formAddNewApp.SetBorder(true).SetTitle(Lang["formAddNewAppTitle"]).SetTitleAlign(tview.AlignLeft)
+		})
+	formAddNewApp.SetBorder(true).SetTitle(" " + Lang["formAddNewAppTitle"] + " " + AppName + " ").SetTitleAlign(tview.AlignLeft)
 	pages.AddPage("addNewApp", formAddNewApp, true, false)
 
 	// UI Page - Invalid App ID Modal
-	modalInvalidAppID := tview.NewModal().
+	modalInvalidAppID = modalInvalidAppID.
 		SetText(Lang["invalidAppID"]).
 		AddButtons([]string{Lang["ok"]}).
 		SetDoneFunc(func(buttonIndex int, buttonLabel string) {
-			if isFirstApp {
-				pages.SwitchToPage("addFirstApp")
-			} else {
-				pages.SwitchToPage("addNewApp")
-			}
+			pages.SwitchToPage(lastPageModal)
 		})
 	pages.AddPage("invalidAppID", modalInvalidAppID, true, false)
 
-	// UI Page - RPC
-	formRPC := tview.NewForm().
-		AddDropDown(Lang["application"], []string{"blank1", "blank2", "blank3"}, 0, nil).
-		AddInputField(Lang["details"], "", 30, nil, nil).
-		AddInputField(Lang["status"], "", 30, nil, nil).
-		AddButton(Lang["start"], nil).
+	// UI Page - App Selection
+	formItemAppList := tview.NewDropDown().SetFieldWidth(32).SetLabel(Lang["selectApp"])
+	formAppSelection = formAppSelection.
+		AddFormItem(formItemAppList).
+		AddButton(Lang["select"], func() {
+			if len(inputAppName) < 1 {
+				return
+			}
+			Config["selectedApp"] = inputAppName
+			ConfigSave()
+			if lastPage == "RPC" {
+				formRPC.SetTitle(" " + AppName + " - " + Lang["selectedApp"] + Config["selectedApp"] + " ")
+			}
+			pages.SwitchToPage(lastPage)
+		}).
+		AddButton(Lang["add"], func() {
+			// ...
+		}).
+		AddButton(Lang["remove"], func() {
+			// ...
+		}).
 		AddButton(Lang["quit"], func() {
 			systray.Quit()
 		})
-	formRPC.SetBorder(true).SetTitle(AppName).SetTitleAlign(tview.AlignLeft)
+	formAppSelection.SetBorder(true).SetTitle(" " + AppName + " ").SetTitleAlign(tview.AlignLeft)
+	pages.AddPage("appSelection", formAppSelection, true, false)
+
+	// UI Page - RPC
+	formRPC = formRPC.
+		AddInputField(Lang["details"], "", 30, nil, nil).
+		AddInputField(Lang["status"], "", 30, nil, nil).
+		AddButton(Lang["start"], nil).
+		AddButton(Lang["changeApp"], func() {
+			options := []string{}
+			for k := range ConfigApps {
+				options = append(options, k)
+			}
+			formItemAppList.SetOptions(options, func(text string, index int) {
+				inputAppName = text
+			})
+			pages.SwitchToPage("appSelection")
+			lastPage = "RPC"
+		}).
+		AddButton(Lang["quit"], func() {
+			systray.Quit()
+		})
+	formRPC.SetBorder(true).SetTitle(" " + Lang["selectedApp"] + Config["selectedApp"] + " ").SetTitleAlign(tview.AlignLeft)
 	pages.AddPage("RPC", formRPC, true, false)
 
 	if len(ConfigApps) < 1 {
-		isFirstApp = true
+		Config["selectedApp"] = inputAppName
+		ConfigSave()
 		pages.SwitchToPage("addFirstApp")
+		lastPage = "addFirstApp"
 	} else {
-		isFirstApp = false
 		pages.SwitchToPage("RPC")
+		lastPage = "RPC"
 	}
 
 	go UI.SetRoot(pages, true).SetFocus(pages).EnableMouse(true).Run()
