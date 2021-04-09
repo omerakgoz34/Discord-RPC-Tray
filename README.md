@@ -17,5 +17,6 @@ Most lightweight app to make custom Discord "playing" statuses :P (WIP)
 Maybe in the future I can add some extra features like displaying the CPU and RAM usage of the PC on Discord profile :D
 
 ## Screenshots
+(For now only Details and State fields usable)  
 ![Screenshot_146](https://user-images.githubusercontent.com/49201485/114171439-f60bfb80-993c-11eb-8ee8-44ac8ea3e870.png)  
 ![Screenshot_147](https://user-images.githubusercontent.com/49201485/114171507-0ae88f00-993d-11eb-8719-6e92439e1c70.png)
