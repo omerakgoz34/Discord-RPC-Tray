@@ -10,7 +10,7 @@ Most lightweight app to make custom Discord "playing" statuses :P (WIP)
 ## Features
 * Written in Go :P
 * Terminal based UI for fast and lightweight usage
-* Uses 0,0% CPU and 8MB of RAM on my windows PC
+* Uses 0,0% CPU and 4-8MB of RAM on my windows PC
 * Of course a Tray icon for hiding the console (for now it's uses default icon until I make a new one :p)
 * UPX compression for smaller file sizes
 

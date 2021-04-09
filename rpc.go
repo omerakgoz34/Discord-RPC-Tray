@@ -31,7 +31,7 @@ func StartRPC() {
 				RPCActive = false
 				client.Logout()
 			}
-			time.Sleep(time.Second * 13)
+			time.Sleep(time.Second * 12)
 		}
 	}()
 }
