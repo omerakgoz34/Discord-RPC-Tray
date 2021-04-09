@@ -3,7 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/getlantern/systray" // hehe
+	"github.com/getlantern/systray"
+	"github.com/hugolgst/rich-go/client"
 )
 
 const (
@@ -34,5 +35,6 @@ func main() {
 // Quit ...
 func Quit() {
 	UI.Stop()
+	client.Logout()
 	log.Println(Lang["debugCoreQuitting"])
 }

@@ -4,10 +4,25 @@ import (
 	"strconv"
 
 	"github.com/getlantern/systray"
+	"github.com/hugolgst/rich-go/client"
 	"github.com/rivo/tview"
 )
 
-var UI *tview.Application = tview.NewApplication()
+var (
+	UI      *tview.Application = tview.NewApplication()
+	FormRPC                    = tview.NewForm()
+)
+
+func rpcButtonStart() {
+	RPCActive = true
+	StartRPC()
+	FormRPC.GetButton(0).SetLabel(Lang["stop"]).SetSelectedFunc(rpcButtonStop)
+}
+func rpcButtonStop() {
+	RPCActive = false
+	client.Logout()
+	FormRPC.GetButton(0).SetLabel(Lang["start"]).SetSelectedFunc(rpcButtonStart)
+}
 
 func LoopUI() {
 	// UI Elements
@@ -18,7 +33,7 @@ func LoopUI() {
 	formAddNewApp := tview.NewForm()
 	modalInvalidAppID := tview.NewModal()
 	formAppSelection := tview.NewForm()
-	formRPC := tview.NewForm()
+	formRemovingApp := tview.NewForm()
 	formItemAppList := tview.NewDropDown().SetFieldWidth(34).SetLabel(Lang["selectApp"])
 
 	// Input Infos
@@ -44,7 +59,7 @@ func LoopUI() {
 				ConfigApps[inputAppName] = inputAppID
 				Config["selectedApp"] = inputAppName
 				ConfigSave()
-				formRPC.SetTitle(" " + AppName + " - " + Lang["selectedApp"] + Config["selectedApp"] + " ")
+				FormRPC.SetTitle(" " + AppName + " - " + Lang["selectedApp"] + Config["selectedApp"] + " ")
 				pages.SwitchToPage("RPC")
 				lastPage = "RPC"
 			}
@@ -63,7 +78,7 @@ func LoopUI() {
 		AddInputField(Lang["id"], "", 18, tview.InputFieldMaxLength(18), func(text string) {
 			inputAppID = text
 		}).
-		AddButton(Lang["save"], func() {
+		AddButton(Lang["add"], func() {
 			if len(inputAppName) < 1 || len(inputAppID) < 18 {
 				return
 			}
@@ -80,6 +95,7 @@ func LoopUI() {
 				formItemAppList.SetOptions(options, func(text string, index int) {
 					inputAppName = text
 				})
+				formItemAppList.SetCurrentOption(-1)
 				pages.SwitchToPage(lastPage)
 				lastPage = "RPC"
 			}
@@ -88,7 +104,7 @@ func LoopUI() {
 			pages.SwitchToPage(lastPage)
 			lastPage = "RPC"
 		})
-	formAddNewApp.SetBorder(true).SetTitle(" " + Lang["formAddNewAppTitle"] + " - " + AppName + " ").SetTitleAlign(tview.AlignLeft)
+	formAddNewApp.SetBorder(true).SetTitle(" " + AppName + " ").SetTitleAlign(tview.AlignLeft)
 	pages.AddPage("addNewApp", formAddNewApp, true, false)
 
 	// UI Page - Invalid App ID Modal
@@ -100,6 +116,32 @@ func LoopUI() {
 		})
 	pages.AddPage("invalidAppID", modalInvalidAppID, true, false)
 
+	// UI Page - Removing App
+	formRemovingApp = formRemovingApp.
+		AddFormItem(formItemAppList).
+		AddButton(Lang["remove"], func() {
+			delete(ConfigApps, inputAppName)
+			delete(Config, "selectedApp")
+			inputAppName = ""
+			ConfigSave()
+			options := []string{}
+			for k := range ConfigApps {
+				options = append(options, k)
+			}
+			formItemAppList.SetOptions(options, func(text string, index int) {
+				inputAppName = text
+			})
+			formItemAppList.SetCurrentOption(-1)
+			pages.SwitchToPage(lastPage)
+			lastPage = "RPC"
+		}).
+		AddButton(Lang["cancel"], func() {
+			pages.SwitchToPage(lastPage)
+			lastPage = "RPC"
+		})
+	formRemovingApp.SetBorder(true).SetTitle(" " + AppName + " ").SetTitleAlign(tview.AlignLeft)
+	pages.AddPage("removingApp", formRemovingApp, true, false)
+
 	// UI Page - App Selection
 	formAppSelection = formAppSelection.
 		AddFormItem(formItemAppList).
@@ -110,16 +152,19 @@ func LoopUI() {
 			Config["selectedApp"] = inputAppName
 			ConfigSave()
 			if lastPage == "RPC" {
-				formRPC.SetTitle(" " + AppName + " - " + Lang["selectedApp"] + Config["selectedApp"] + " ")
+				FormRPC.SetTitle(" " + AppName + " - " + Lang["selectedApp"] + Config["selectedApp"] + " ")
 			}
 			pages.SwitchToPage(lastPage)
 		}).
 		AddButton(Lang["add"], func() {
 			lastPage = "appSelection"
 			pages.SwitchToPage("addNewApp")
+			formItemAppList.SetCurrentOption(-1)
 		}).
 		AddButton(Lang["remove"], func() {
-			// ...
+			lastPage = "appSelection"
+			pages.SwitchToPage("removingApp")
+			formItemAppList.SetCurrentOption(-1)
 		}).
 		AddButton(Lang["quit"], func() {
 			systray.Quit()
@@ -128,11 +173,17 @@ func LoopUI() {
 	pages.AddPage("appSelection", formAppSelection, true, false)
 
 	// UI Page - RPC
-	formRPC = formRPC.
-		AddInputField(Lang["details"], "", 30, nil, nil).
-		AddInputField(Lang["status"], "", 30, nil, nil).
-		AddButton(Lang["start"], nil).
+	FormRPC = FormRPC.
+		AddInputField(Lang["details"], "", 34, nil, func(text string) {
+			RPCDetails = text
+		}).
+		AddInputField(Lang["state"], "", 34, nil, func(text string) {
+			RPCState = text
+		}).
+		AddButton(Lang["start"], rpcButtonStart).
 		AddButton(Lang["changeApp"], func() {
+			RPCActive = false
+			client.Logout()
 			options := []string{}
 			for k := range ConfigApps {
 				options = append(options, k)
@@ -142,16 +193,17 @@ func LoopUI() {
 			})
 			pages.SwitchToPage("appSelection")
 			lastPage = "RPC"
+			formItemAppList.SetCurrentOption(-1)
 		}).
 		AddButton(Lang["quit"], func() {
 			systray.Quit()
 		})
-	formRPC.SetBorder(true).SetTitle(" " + Lang["selectedApp"] + Config["selectedApp"] + " ").SetTitleAlign(tview.AlignLeft)
-	pages.AddPage("RPC", formRPC, true, false)
+	FormRPC.SetBorder(true).SetTitle(" " + Lang["selectedApp"] + Config["selectedApp"] + " ").SetTitleAlign(tview.AlignLeft)
+	pages.AddPage("RPC", FormRPC, true, false)
 
 	// Check if there is no saved app
 	if len(ConfigApps) < 1 {
-		Config["selectedApp"] = inputAppName
+		delete(Config, "selectedApp")
 		ConfigSave()
 		pages.SwitchToPage("addFirstApp")
 		lastPage = "addFirstApp"
