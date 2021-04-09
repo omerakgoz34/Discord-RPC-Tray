@@ -52,7 +52,7 @@ var LangEN = map[string]string{
 	"id":          "ID",
 	"ok":          "OK",
 	"details":     "Details",
-	"state":       "Status",
+	"state":       "State",
 	"start":       "Start",
 	"stop":        "Stop",
 	"select":      "Select",

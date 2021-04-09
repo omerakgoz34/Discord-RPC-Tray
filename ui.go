@@ -198,7 +198,7 @@ func LoopUI() {
 		AddButton(Lang["quit"], func() {
 			systray.Quit()
 		})
-	FormRPC.SetBorder(true).SetTitle(" " + Lang["selectedApp"] + Config["selectedApp"] + " ").SetTitleAlign(tview.AlignLeft)
+	FormRPC.SetBorder(true).SetTitle(" " + AppName + " - " + Lang["selectedApp"] + Config["selectedApp"] + " ").SetTitleAlign(tview.AlignLeft)
 	pages.AddPage("RPC", FormRPC, true, false)
 
 	// Check if there is no saved app
