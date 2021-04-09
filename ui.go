@@ -19,6 +19,7 @@ func LoopUI() {
 	modalInvalidAppID := tview.NewModal()
 	formAppSelection := tview.NewForm()
 	formRPC := tview.NewForm()
+	formItemAppList := tview.NewDropDown().SetFieldWidth(34).SetLabel(Lang["selectApp"])
 
 	// Input Infos
 	inputAppName := ""
@@ -26,7 +27,7 @@ func LoopUI() {
 
 	// UI Page - Add First App
 	formAddFirstApp = formAddFirstApp.
-		AddInputField(Lang["name"], "", 32, tview.InputFieldMaxLength(32), func(text string) {
+		AddInputField(Lang["name"], "", 34, tview.InputFieldMaxLength(34), func(text string) {
 			inputAppName = text
 		}).
 		AddInputField(Lang["id"], "", 18, tview.InputFieldMaxLength(18), func(text string) {
@@ -37,8 +38,8 @@ func LoopUI() {
 				return
 			}
 			if _, err := strconv.ParseInt(inputAppID, 10, 64); err != nil {
-				pages.SwitchToPage("invalidAppID")
 				lastPageModal = "addFirstApp"
+				pages.SwitchToPage("invalidAppID")
 			} else {
 				ConfigApps[inputAppName] = inputAppID
 				Config["selectedApp"] = inputAppName
@@ -56,7 +57,7 @@ func LoopUI() {
 
 	// UI Page - Add New App
 	formAddNewApp = formAddNewApp.
-		AddInputField(Lang["name"], "", 32, tview.InputFieldMaxLength(32), func(text string) {
+		AddInputField(Lang["name"], "", 34, tview.InputFieldMaxLength(34), func(text string) {
 			inputAppName = text
 		}).
 		AddInputField(Lang["id"], "", 18, tview.InputFieldMaxLength(18), func(text string) {
@@ -67,23 +68,27 @@ func LoopUI() {
 				return
 			}
 			if _, err := strconv.ParseInt(inputAppID, 10, 64); err != nil || len(inputAppID) < 18 {
-				pages.SwitchToPage("invalidAppID")
 				lastPageModal = "addNewApp"
+				pages.SwitchToPage("invalidAppID")
 			} else {
 				ConfigApps[inputAppName] = inputAppID
-				Config["selectedApp"] = inputAppName
 				ConfigSave()
-				if lastPage == "RPC" {
-					formRPC.SetTitle(" " + AppName + " - " + Lang["selectedApp"] + Config["selectedApp"] + " ")
+				options := []string{}
+				for k := range ConfigApps {
+					options = append(options, k)
 				}
-				pages.SwitchToPage("RPC")
+				formItemAppList.SetOptions(options, func(text string, index int) {
+					inputAppName = text
+				})
+				pages.SwitchToPage(lastPage)
 				lastPage = "RPC"
 			}
 		}).
 		AddButton(Lang["cancel"], func() {
 			pages.SwitchToPage(lastPage)
+			lastPage = "RPC"
 		})
-	formAddNewApp.SetBorder(true).SetTitle(" " + Lang["formAddNewAppTitle"] + " " + AppName + " ").SetTitleAlign(tview.AlignLeft)
+	formAddNewApp.SetBorder(true).SetTitle(" " + Lang["formAddNewAppTitle"] + " - " + AppName + " ").SetTitleAlign(tview.AlignLeft)
 	pages.AddPage("addNewApp", formAddNewApp, true, false)
 
 	// UI Page - Invalid App ID Modal
@@ -96,7 +101,6 @@ func LoopUI() {
 	pages.AddPage("invalidAppID", modalInvalidAppID, true, false)
 
 	// UI Page - App Selection
-	formItemAppList := tview.NewDropDown().SetFieldWidth(32).SetLabel(Lang["selectApp"])
 	formAppSelection = formAppSelection.
 		AddFormItem(formItemAppList).
 		AddButton(Lang["select"], func() {
@@ -111,7 +115,8 @@ func LoopUI() {
 			pages.SwitchToPage(lastPage)
 		}).
 		AddButton(Lang["add"], func() {
-			// ...
+			lastPage = "appSelection"
+			pages.SwitchToPage("addNewApp")
 		}).
 		AddButton(Lang["remove"], func() {
 			// ...
@@ -144,6 +149,7 @@ func LoopUI() {
 	formRPC.SetBorder(true).SetTitle(" " + Lang["selectedApp"] + Config["selectedApp"] + " ").SetTitleAlign(tview.AlignLeft)
 	pages.AddPage("RPC", formRPC, true, false)
 
+	// Check if there is no saved app
 	if len(ConfigApps) < 1 {
 		Config["selectedApp"] = inputAppName
 		ConfigSave()
@@ -154,5 +160,6 @@ func LoopUI() {
 		lastPage = "RPC"
 	}
 
+	// Start UI loop
 	go UI.SetRoot(pages, true).SetFocus(pages).EnableMouse(true).Run()
 }
