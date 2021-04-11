@@ -1,8 +1,8 @@
 # Discord-RPC-Tray
 
 Most lightweight app to make custom Discord "playing" statuses :P (WIP)  
-[![BUILD: Windows](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/debug_windows.yml/badge.svg?branch=main)](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/debug_windows.yml)
-[![BUILD: Windows](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/debug_linux.yml/badge.svg?branch=main)](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/debug_linux.yml)
+[![BUILD: Windows](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/build_windows.yml/badge.svg)](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/build_windows.yml)
+[![BUILD: Linux](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/build_linux.yml/badge.svg)](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/build_linux.yml)
 
 ## Installation
 * **Windows:** Download the exe file from the [Releases](https://github.com/omerakgoz34/Discord-RPC-Tray/releases) page and run it. (I will add it to [Scoop](https://scoop.sh) extras repo in the future)
