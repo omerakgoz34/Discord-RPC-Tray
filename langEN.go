@@ -58,4 +58,5 @@ var LangEN = map[string]string{
 	"select":      "Select",
 	"add":         "Add",
 	"remove":      "Remove",
+	"error":       "ERROR",
 }

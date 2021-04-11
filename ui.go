@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"strconv"
 
 	"github.com/getlantern/systray"
@@ -12,17 +13,6 @@ var (
 	UI      *tview.Application = tview.NewApplication()
 	FormRPC                    = tview.NewForm()
 )
-
-func rpcButtonStart() {
-	RPCActive = true
-	StartRPC()
-	FormRPC.GetButton(0).SetLabel(Lang["stop"]).SetSelectedFunc(rpcButtonStop)
-}
-func rpcButtonStop() {
-	RPCActive = false
-	client.Logout()
-	FormRPC.GetButton(0).SetLabel(Lang["start"]).SetSelectedFunc(rpcButtonStart)
-}
 
 func LoopUI() {
 	// UI Elements
@@ -180,7 +170,7 @@ func LoopUI() {
 		AddInputField(Lang["state"], "", 34, nil, func(text string) {
 			RPCState = text
 		}).
-		AddButton(Lang["start"], rpcButtonStart).
+		AddButton(Lang["start"], RPCStart).
 		AddButton(Lang["changeApp"], func() {
 			RPCActive = false
 			client.Logout()
@@ -213,5 +203,6 @@ func LoopUI() {
 	}
 
 	// Start UI loop
-	go UI.SetRoot(pages, true).SetFocus(pages).EnableMouse(true).Run()
+	UI.SetRoot(pages, true).SetFocus(pages).EnableMouse(true).Run()
+	log.Println(Lang["debugUIReady"])
 }

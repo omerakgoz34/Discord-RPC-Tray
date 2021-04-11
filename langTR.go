@@ -58,4 +58,5 @@ var LangTR = map[string]string{
 	"select":      "Seç",
 	"add":         "Ekle",
 	"remove":      "Kaldır",
+	"error":       "HATA",
 }

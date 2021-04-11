@@ -4,13 +4,12 @@ import (
 	"log"
 
 	"github.com/getlantern/systray"
-	"github.com/hugolgst/rich-go/client"
 )
 
 const (
 	// AppName ...
 	AppName    = "Discord RPC Tray"
-	AppVersion = "v0.0.0"
+	AppVersion = "0.0.0"
 )
 
 func main() {
@@ -26,7 +25,7 @@ func main() {
 
 	// Start the UI
 	log.Println(Lang["debugUIStarting"])
-	LoopUI()
+	go LoopUI()
 	// Start the Tray
 	log.Println(Lang["debugTrayStarting"])
 	systray.Run(Tray, Quit)
@@ -34,7 +33,7 @@ func main() {
 
 // Quit ...
 func Quit() {
+	RPCStop()
 	UI.Stop()
-	client.Logout()
 	log.Println(Lang["debugCoreQuitting"])
 }
