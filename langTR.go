@@ -27,6 +27,11 @@ var LangTR = map[string]string{
 
 	// Debug - UI
 	"debugUIStarting": "ARAYÜZ: başlatılıyor...",
+	"debugUIReady":    "ARAYÜZ: hazır.",
+
+	// Debug - RPC
+	"rpcStarted": "RPC: başlatıldı.",
+	"rpcStopped": "RPC: durduruldu.",
 
 	// Tray Menu
 	"trayButtonConsoleHide":     "Konsolu Gizle",

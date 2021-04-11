@@ -27,6 +27,11 @@ var LangEN = map[string]string{
 
 	// Debug - UI
 	"debugUIStarting": "UI: starting...",
+	"debugUIReady":    "UI: ready.",
+
+	// Debug - RPC
+	"rpcStarted": "RPC: started.",
+	"rpcStopped": "RPC: stopped.",
 
 	// Tray Menu
 	"trayButtonConsoleHide":     "Hide Console",
