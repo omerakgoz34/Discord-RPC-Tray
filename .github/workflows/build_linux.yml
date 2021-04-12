@@ -29,5 +29,5 @@ jobs:
     - name: Binary
       uses: actions/upload-artifact@v2
       with:
-        name: Linux Binary
+        name: Discord-RPC-Tray_linux
         path: Discord-RPC-Tray.exe

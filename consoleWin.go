@@ -39,5 +39,5 @@ func ConsoleShow() {
 		return
 	}
 
-	showWindow.Call(hwnd, 1)
+	showWindow.Call(hwnd, 5)
 }
