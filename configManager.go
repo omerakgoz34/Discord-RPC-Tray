@@ -112,7 +112,7 @@ func ConfigSave() {
 		log.Fatalln(Lang["errorOpeningConfigFile"], err)
 	}
 	defer configFile.Close()
-	configBytes, err := json.Marshal(Config)
+	configBytes, err := json.MarshalIndent(Config, "", "  ")
 	if err != nil {
 		log.Fatalln(Lang["errorMarshalingConfigData"], err)
 	}
@@ -129,7 +129,7 @@ func ConfigSave() {
 		log.Fatalln(Lang["errorOpeningConfigFile"], err)
 	}
 	defer configAppsFile.Close()
-	configAppsBytes, err := json.Marshal(ConfigApps)
+	configAppsBytes, err := json.MarshalIndent(ConfigApps, "", "  ")
 	if err != nil {
 		log.Fatalln(Lang["errorMarshalingConfigData"], err)
 	}
