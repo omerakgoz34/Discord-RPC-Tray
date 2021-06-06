@@ -2,46 +2,89 @@ package main
 
 import (
 	"log"
+	"time"
 
 	"github.com/getlantern/systray"
-	"github.com/getlantern/systray/example/icon"
+	"github.com/skratchdot/open-golang/open"
 )
 
 func Tray() {
-	systray.SetTemplateIcon(icon.Data, icon.Data)
+	systray.SetTemplateIcon(Icon, Icon)
 	systray.SetTitle(AppName)
 	systray.SetTooltip(AppName)
 
-	// Tray Button - Show/Hide Console
-	trayButtonConsole := systray.AddMenuItem(Lang["trayButtonConsoleHide"], Lang["trayButtonConsoleHideDesc"])
-	trayButtonConsoleType := "hide"
+	trayButtonOpenConfig := systray.AddMenuItem("Open Config", "Opens config file")
 	go func() {
 		for {
-			<-trayButtonConsole.ClickedCh
-			switch trayButtonConsoleType {
-			case "hide":
-				ConsoleHide()
-				log.Println(Lang["debugConsoleHide"])
-				trayButtonConsole.SetTitle(Lang["trayButtonConsoleShow"])
-				trayButtonConsole.SetTooltip(Lang["trayButtonConsoleShowDesc"])
-				trayButtonConsoleType = "show"
+			<-trayButtonOpenConfig.ClickedCh
+			open.Run(ConfigDir + ConfigFileName)
+			log.Println("Config opened.")
+		}
+	}()
 
-			case "show":
-				ConsoleShow()
-				log.Println(Lang["debugConsoleShow"])
-				trayButtonConsole.SetTitle(Lang["trayButtonConsoleHide"])
-				trayButtonConsole.SetTooltip(Lang["trayButtonConsoleHideDesc"])
-				trayButtonConsoleType = "hide"
+	trayButtonConfigSample := systray.AddMenuItem("Open Sample Config", "Opens sample config file")
+	go func() {
+		for {
+			<-trayButtonConfigSample.ClickedCh
+			open.Run(ConfigDir + ConfigFileSampleName)
+			log.Println("Sample config reloaded.")
+		}
+	}()
+
+	systray.AddSeparator()
+
+	trayButtonRPC := systray.AddMenuItem("Start RPC", "Starts RPC")
+	trayButtonRPCState := true
+	go func() {
+		for {
+			<-trayButtonRPC.ClickedCh
+			switch trayButtonRPCState {
+			case true:
+				RPCStart()
+				trayButtonRPC.SetTitle("Stop RPC")
+				trayButtonRPC.SetTooltip("Stops RPC")
+				systray.SetTemplateIcon(IconGreen, IconGreen)
+				trayButtonRPCState = false
+
+			case false:
+				RPCStop()
+				trayButtonRPC.SetTitle("Start RPC")
+				trayButtonRPC.SetTooltip("Starts RPC")
+				systray.SetTemplateIcon(IconRed, IconRed)
+				trayButtonRPCState = true
 			}
 		}
 	}()
 
-	// Tray Button - Quit
-	trayButtonQuit := systray.AddMenuItem(Lang["quit"], Lang["trayButtonQuitDesc"])
+	trayButtonDateNow := systray.AddMenuItem("Date Now", "Writes time.Now() to config file")
+	go func() {
+		for {
+			<-trayButtonDateNow.ClickedCh
+			Config.DateNow = time.Now()
+			ConfigSave()
+		}
+	}()
+
+	trayButtonReload := systray.AddMenuItem("Reload Config", "Reloads config file")
+	go func() {
+		for {
+			<-trayButtonReload.ClickedCh
+			ConfigReload()
+		}
+	}()
+
+	systray.AddSeparator()
+
+	systray.AddMenuItem("v"+AppVersion, "Version").Disable()
+	trayButtonProjectPage := systray.AddMenuItem("Project Page", "Opens project page")
+	go func() {
+		<-trayButtonProjectPage.ClickedCh
+		open.Run(AppProjectPage)
+	}()
+
+	trayButtonQuit := systray.AddMenuItem("Quit", "Quits the app")
 	go func() {
 		<-trayButtonQuit.ClickedCh
 		systray.Quit()
 	}()
-
-	log.Println(Lang["debugTrayReady"])
 }

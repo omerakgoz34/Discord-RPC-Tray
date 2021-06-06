@@ -7,33 +7,20 @@ import (
 )
 
 const (
-	// AppName ...
-	AppName    = "Discord RPC Tray"
-	AppVersion = "0.0.0"
+	AppName        = "Discord RPC Tray"
+	AppVersion     = "1.0.0"
+	AppProjectPage = "https://github.com/omerakgoz34/Discord-RPC-Tray"
 )
 
 func main() {
-	// Logging Msg Prefix
 	log.SetPrefix("DEBUG >>> ")
 
-	// Start the Core
-	log.Println("CORE: starting...")
-	InitConfigFile()
-	InitLang()
-	log.Println(Lang["debugCoreInitLang"])
-	log.Println(Lang["debugCoreReady"])
+	ConfigInit()
 
-	// Start the UI
-	log.Println(Lang["debugUIStarting"])
-	go LoopUI()
-	// Start the Tray
-	log.Println(Lang["debugTrayStarting"])
 	systray.Run(Tray, Quit)
 }
 
-// Quit ...
 func Quit() {
 	RPCStop()
-	UI.Stop()
-	log.Println(Lang["debugCoreQuitting"])
+	log.Println("Quitting...")
 }

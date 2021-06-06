@@ -1,4 +1,4 @@
-name: "BUILD: Linux"
+name: "BUILD: macOS"
 
 on:
   push:
@@ -11,12 +11,9 @@ on:
 jobs:
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
-    
-    - name: Install ubuntu dependencies
-      run: sudo apt update && sudo apt install gcc libgtk-3-dev libappindicator3-dev
 
     - name: Set up Go
       uses: actions/setup-go@v2
@@ -29,5 +26,5 @@ jobs:
     - name: Binary
       uses: actions/upload-artifact@v2
       with:
-        name: Discord-RPC-Tray_linux
+        name: Discord-RPC-Tray_macos
         path: Discord-RPC-Tray

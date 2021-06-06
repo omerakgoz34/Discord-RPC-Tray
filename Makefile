@@ -1,21 +1,21 @@
-RELEASE_FLAGS := -ldflags="-s -w"
-DEBUG_FLAGS := -ldflags="" -tags=debug
-BINARY_NAME := Discord-RPC-Tray.exe
-
 all: build
 
-build:
-	go build -v $(DEBUG_FLAGS) -o $(BINARY_NAME)
+build: clean
+	go build -v -ldflags="" -tags=debug
 
-run: build
+release: clean
+ifeq ($(OS),Windows_NT)
+	go build -v -ldflags="-s -w -H=windowsgui"
+else
+	go build -v -ldflags="-s -w"
+endif
+
+run:
 	$(BINARY_NAME)
-
-release:
-	go build -v $(RELEASE_FLAGS) -o $(BINARY_NAME)
 
 clean:
 ifeq ($(OS),Windows_NT)
-	del /Q $(BINARY_NAME)
+	del /Q Discord-RPC-Tray.exe
 else
-	rm -r $(BINARY_NAME)
+	rm -rf Discord-RPC-Tray
 endif
