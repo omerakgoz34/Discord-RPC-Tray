@@ -1,18 +1,20 @@
 # Discord-RPC-Tray
 
+ENGLISH | [TURKISH](/README_TR.md)
+
 Most lightweight app to make custom Discord "Playing" statuses :P  
   
 [![BUILD: Windows](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/build-windows.yml/badge.svg)](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/build-windows.yml)
 [![BUILD: Linux](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/build-linux.yml/badge.svg)](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/build-linux.yml)
 [![BUILD: macOS](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/build-macos.yml/badge.svg)](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/build-macos.yml)  
 
-## Downloads
+## Downloads (v1.0.0)
 
 * [Windows x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.0.0/Discord-RPC-Tray_v1.0.0_windows64.zip)
 * Linux x64 (testing)
 * macOS x64 (testing)
 
-## Screenshots  
+## Screenshots
 
 ![Screenshot_240](https://user-images.githubusercontent.com/49201485/120932531-e7ed1800-c6fe-11eb-9d3b-dd016403f6df.png)  
 ![Screenshot_237](https://user-images.githubusercontent.com/49201485/120929660-8757de00-c6f2-11eb-87b8-74cbab6ecb02.png)  
