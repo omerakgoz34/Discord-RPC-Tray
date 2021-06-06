@@ -1,4 +1,4 @@
-name: "BUILD: macOS"
+name: "BUILD Release: macOS"
 
 on:
   push:

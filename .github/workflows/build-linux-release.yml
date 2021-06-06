@@ -1,4 +1,4 @@
-name: "BUILD: Linux"
+name: "BUILD Release: Linux"
 
 on:
   push:

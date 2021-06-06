@@ -1,4 +1,4 @@
-name: "BUILD: Windows"
+name: "BUILD Release: Windows"
 
 on:
   push:
