@@ -13,6 +13,9 @@ func Tray() {
 	systray.SetTitle(AppName)
 	systray.SetTooltip(AppName)
 
+	systray.AddMenuItem(AppName+" v"+AppVersion, "Version").Disable()
+	systray.AddSeparator()
+
 	trayButtonOpenConfig := systray.AddMenuItem("Open Config", "Opens config file")
 	go func() {
 		for {
@@ -75,7 +78,6 @@ func Tray() {
 
 	systray.AddSeparator()
 
-	systray.AddMenuItem("v"+AppVersion, "Version").Disable()
 	trayButtonProjectPage := systray.AddMenuItem("Project Page", "Opens project page")
 	go func() {
 		<-trayButtonProjectPage.ClickedCh

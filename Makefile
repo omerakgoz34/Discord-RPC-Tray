@@ -11,7 +11,11 @@ else
 endif
 
 run:
-	$(BINARY_NAME)
+ifeq ($(OS),Windows_NT)
+	.\Discord-RPC-Tray.exe
+else
+	./Discord-RPC-Tray
+endif
 
 clean:
 ifeq ($(OS),Windows_NT)
