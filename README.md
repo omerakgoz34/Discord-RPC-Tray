@@ -29,6 +29,7 @@ Most lightweight app to make custom Discord "Playing" statuses :P
 
 ## Usage
 
+* Config path on windows: `C:\Users\omerakgoz34\AppData\Roaming\Discord RPC Tray\config.json` on linux and macos: `~/.config/Discord RPC Tray/config.json`
 * After changing config, need to reload config.
 * Also there is a sample config file accessible from tray menu for referencing.
 * If any error occurs, the app closes itself automatically. Because there is no UI to notify the user :p
