@@ -8,7 +8,7 @@ Most lightweight app to make custom Discord "Playing" statuses :P
 
 ## Downloads
 
-* [Windows x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.0.0/Discord-RPC-Tray_windows64.zip)
+* [Windows x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.0.0/Discord-RPC-Tray_v1.0.0_windows64.zip)
 * Linux x64 (testing)
 * macOS x64 (testing)
 
