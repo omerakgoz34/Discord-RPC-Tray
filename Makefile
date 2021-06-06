@@ -1,9 +1,9 @@
 all: build
 
-build: clean
+build:
 	go build -v -ldflags="" -tags=debug
 
-release: clean
+release:
 ifeq ($(OS),Windows_NT)
 	go build -v -ldflags="-s -w -H=windowsgui"
 else
