@@ -2,7 +2,7 @@
 
 [İNGİLİZCE](/README.md) | TÜRKÇE
 
-Özel Discord "Oynuyor" durumu yapmak için en hafif uygulama :P  
+Özel Discord "Oynuyor" durumu yapmak için en hafif uygulama!  
   
 [![BUILD: Windows](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/build-windows.yml/badge.svg)](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/build-windows.yml)
 [![BUILD: Linux](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/build-linux.yml/badge.svg)](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/build-linux.yml)

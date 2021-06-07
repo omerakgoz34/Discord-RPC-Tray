@@ -1,0 +1,27 @@
+{
+    "version": "1.0.0",
+    "description": "Most lightweight app to make custom Discord \"Playing\" statuses :P",
+    "homepage": "https://github.com/omerakgoz34/Discord-RPC-Tray",
+    "license": "GPL-3.0-only",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.0.0/Discord-RPC-Tray_v1.0.0_windows64.zip",
+            "hash": "7ccf9365edc626beb63e599bdaeaae00fc3dc221375be9da2c4033fafe1bbeff"
+        }
+    },
+    "bin": "Discord-RPC-Tray.exe",
+    "shortcuts": [
+        [
+            "Discord-RPC-Tray.exe",
+            "Discord RPC Tray"
+        ]
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v$version/Discord-RPC-Tray_v$version_windows64.zip"
+            }
+        }
+    }
+}

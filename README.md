@@ -2,7 +2,7 @@
 
 ENGLISH | [TURKISH](/README_TR.md)
 
-Most lightweight app to make custom Discord "Playing" statuses :P  
+Most lightweight app to make custom Discord "Playing" statuses!  
   
 [![BUILD: Windows](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/build-windows.yml/badge.svg)](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/build-windows.yml)
 [![BUILD: Linux](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/build-linux.yml/badge.svg)](https://github.com/omerakgoz34/Discord-RPC-Tray/actions/workflows/build-linux.yml)

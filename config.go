@@ -24,30 +24,6 @@ var (
 	}{
 		AppID:   "830041049794609152",
 		DateNow: time.Now(),
-		RPC: client.Activity{
-			Details:    "Playing with RPC",
-			State:      "Players: ",
-			LargeImage: "discord-logo",
-			LargeText:  "This is a Discord Logo",
-			SmallImage: "discord-logo",
-			SmallText:  "Also, this is a Discord Logo",
-			Party: &client.Party{
-				ID:         "343434343434343434",
-				Players:    1,
-				MaxPlayers: 100,
-			},
-			Timestamps: &client.Timestamps{},
-			Buttons: []*client.Button{
-				{
-					Label: "Project Page",
-					Url:   "https://github.com/omerakgoz34/Discord-RPC-Tray",
-				},
-				{
-					Label: "Created by omerakgoz34",
-					Url:   "https://twitter.com/omerakgoz34",
-				},
-			},
-		},
 	}
 	ConfigSample = struct {
 		AppID   string          `json:"AppID"`
