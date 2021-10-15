@@ -1,6 +1,6 @@
 # Discord-RPC-Tray
 
-Lang: >EN< | [TR](/README_TR.md)
+Lang: [EN] [TR](/README_TR.md)
 
 Most lightweight app to make custom Discord "Playing" statuses!  
   
@@ -10,9 +10,9 @@ Most lightweight app to make custom Discord "Playing" statuses!
 
 ## Downloads (v1.0.0)
 
-* [Latest Windows x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.0.0/Discord-RPC-Tray_v1.0.0_win64.zip)
+* [Windows x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.0.0/Discord-RPC-Tray_v1.0.0_win64.zip)
 * Linux (not tested yet)
-* [Latest macOS x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.0.0/Discord-RPC-Tray_v1.0.0_macos64.app.zip) (thanks to [@elvodqa](https://github.com/elvodqa))
+* [macOS x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.0.0/Discord-RPC-Tray_v1.0.0_macos64.app.zip) (thanks to [@elvodqa](https://github.com/elvodqa))
 
 ## Screenshots
 
