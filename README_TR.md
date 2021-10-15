@@ -10,7 +10,7 @@ Dil: [EN](/README.md) [TR]
 
 ## İndirme Linkleri (v1.0.0)
 
-* [Windows x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.0.0/Discord-RPC-Tray_v1.0.0_windows64.zip)
+* [Windows x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.0.0/Discord-RPC-Tray_v1.0.0_win64.zip)
 * Linux x64 (henüz test edilmedi)
 * [macOS x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.0.0/Discord-RPC-Tray_v1.0.0_macos64.app.zip) ([@elvodqa](https://github.com/elvodqa)'ya teşekkürler)
 
