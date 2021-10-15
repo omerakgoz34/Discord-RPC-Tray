@@ -1,6 +1,6 @@
 # Discord-RPC-Tray
 
-Dil: [EN](/README.md) | >TR<
+Dil: [EN](/README.md) [TR]
 
 Özel Discord "Oynuyor" durumu yapmak için en hafif uygulama!  
   
