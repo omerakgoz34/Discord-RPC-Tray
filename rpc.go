@@ -4,28 +4,27 @@ import (
 	"log"
 	"time"
 
-	"github.com/getlantern/systray"
+	"github.com/andlabs/ui"
 	"github.com/hugolgst/rich-go/client"
 )
 
 var RPCActive = false
 
 func RPCStop() {
-	RPCActive = false
 	client.Logout()
+	RPCActive = false
+	GUIch <- "buttonStart"
 	log.Println("RPC stopped.")
 }
 
 func RPCStart() {
-	ConfigReload()
-	RPCActive = true
-
 	if err := client.Login(Config.AppID); err != nil {
 		log.Println(err)
-		systray.Quit()
+		RPCActive = false
+		GUIch <- "buttonStart"
+		ui.MsgBoxError(Win, "ERROR!", "Can't login to Discord RPC")
+		return
 	}
-
-	log.Println("RPC started.")
 
 	go func() {
 		for {
@@ -35,9 +34,16 @@ func RPCStart() {
 
 			if err := client.SetActivity(Config.RPC); err != nil {
 				log.Println(err)
-				systray.Quit()
+				RPCActive = false
+				GUIch <- "buttonStart"
+				ui.MsgBoxError(Win, "ERROR!", "Can't update RPC")
+				return
 			}
 			time.Sleep(time.Second * 12)
 		}
 	}()
+
+	RPCActive = true
+	GUIch <- "buttonStop"
+	log.Println("RPC started.")
 }
