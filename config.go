@@ -12,22 +12,19 @@ import (
 	"github.com/hugolgst/rich-go/client"
 )
 
-var (
-	ConfigFileName       = "config.json"
-	ConfigFileSampleName = "configSample.json"
-	ConfigDir            string
-	now                  = time.Now()
+type config struct {
+	AppID string          `json:"AppID"`
+	RPC   client.Activity `json:"RPC"`
+}
 
-	Config = struct {
-		AppID string          `json:"AppID"`
-		RPC   client.Activity `json:"RPC"`
-	}{
-		AppID: "830041049794609152",
-	}
-	ConfigSample = struct {
-		AppID string          `json:"AppID"`
-		RPC   client.Activity `json:"RPC"`
-	}{
+var (
+	ConfigFileName  = "config.json"
+	ConfigDir       string
+	nowSample       = time.Now()
+	ConfigCurropted = false
+
+	Config       config
+	ConfigSample = config{
 		AppID: "830041049794609152",
 		RPC: client.Activity{
 			Details:    "Playing with RPC",
@@ -42,8 +39,8 @@ var (
 				MaxPlayers: 100,
 			},
 			Timestamps: &client.Timestamps{
-				Start: &now,
-				End:   &now,
+				Start: &nowSample,
+				End:   nil,
 			},
 			Buttons: []*client.Button{
 				{
@@ -100,14 +97,63 @@ func ConfigInit() {
 				log.Fatalln(err)
 			}
 			configFile.Close()
+			log.Println("New config file created.")
 			ConfigReload()
 		} else {
 			log.Fatalln(err)
 		}
 	} else {
 		io.Copy(configFileBuf, configFile)
-		json.Unmarshal(configFileBuf.Bytes(), &Config)
+		if err := json.Unmarshal(configFileBuf.Bytes(), &Config); err != nil {
+			// Write Sample Config File
+			if err := os.MkdirAll(ConfigDir, os.ModePerm); err != nil {
+				log.Fatalln(err)
+			}
+			configFile, err := os.Create(ConfigDir + ConfigFileName)
+			if err != nil {
+				log.Fatalln(err)
+			}
+			configBytes, err := json.MarshalIndent(ConfigSample, "", "    ")
+			if err != nil {
+				log.Fatalln(err)
+			}
+			if _, err = configFile.Write(configBytes); err != nil {
+				log.Fatalln(err)
+			}
+			if err = configFile.Sync(); err != nil {
+				log.Fatalln(err)
+			}
+			configFile.Close()
+			log.Println("New config file created.")
+			ConfigCurropted = true
+			ConfigReload()
+		}
 		configFile.Close()
+	}
+
+	if len(Config.AppID) < 18 {
+		// Write Sample Config File
+		if err := os.MkdirAll(ConfigDir, os.ModePerm); err != nil {
+			log.Fatalln(err)
+		}
+		configFile, err := os.Create(ConfigDir + ConfigFileName)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		configBytes, err := json.MarshalIndent(ConfigSample, "", "    ")
+		if err != nil {
+			log.Fatalln(err)
+		}
+		if _, err = configFile.Write(configBytes); err != nil {
+			log.Fatalln(err)
+		}
+		if err = configFile.Sync(); err != nil {
+			log.Fatalln(err)
+		}
+		configFile.Close()
+		log.Println("New config file created.")
+		ConfigCurropted = true
+		ConfigReload()
 	}
 	log.Println("Config: ", Config)
 }
@@ -122,7 +168,10 @@ func ConfigReload() {
 		}
 	} else {
 		io.Copy(configFileBuf, configFile)
-		json.Unmarshal(configFileBuf.Bytes(), &Config)
+		if err := json.Unmarshal(configFileBuf.Bytes(), &Config); err != nil {
+			log.Fatalln(err)
+			return
+		}
 	}
 
 	configFile.Close()

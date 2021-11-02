@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/andlabs/ui"
@@ -81,11 +82,23 @@ func GUIsetup() {
 
 	// RPC - Timestamps
 	entryRPCtimestampsStart := ui.NewEntry()
-	entryRPCtimestampsStart.SetText(Config.RPC.Timestamps.Start.Local().Format(timeLayout))
+	// entryRPCtimestampsStart.SetText(Config.RPC.Timestamps.Start.Local().Format(timeLayout))
 	formApp.Append("Start Timestamp:", entryRPCtimestampsStart, false)
 	entryRPCtimestampsEnd := ui.NewEntry()
-	entryRPCtimestampsEnd.SetText(Config.RPC.Timestamps.End.Local().Format(timeLayout))
+	// entryRPCtimestampsEnd.SetText(Config.RPC.Timestamps.End.Local().Format(timeLayout))
 	formApp.Append("End Timestamp:", entryRPCtimestampsEnd, false)
+
+	if Config.RPC.Timestamps.Start == nil {
+		entryRPCtimestampsStart.SetText("")
+	} else {
+		entryRPCtimestampsStart.SetText(Config.RPC.Timestamps.Start.Local().Format(timeLayout))
+	}
+	if Config.RPC.Timestamps.End == nil {
+		entryRPCtimestampsEnd.SetText("")
+		log.Println("asdasd")
+	} else {
+		entryRPCtimestampsEnd.SetText(Config.RPC.Timestamps.End.Local().Format(timeLayout))
+	}
 
 	// RPC - Buttons
 	entryRPCbuttonsFirstLabel := ui.NewEntry()
@@ -130,71 +143,96 @@ func GUIsetup() {
 		buttonSaveConfig.Disable()
 
 		// IDs
-		_, err := strconv.Atoi(entryFormAppID.Text())
+		_, err := strconv.Atoi(strings.TrimSpace(entryFormAppID.Text()))
 		if err != nil {
 			buttonSaveConfig.Enable()
 			ui.MsgBoxError(Win, "ERROR!", "App ID field has to be number.")
 			return
-		}
-		if len(entryFormAppID.Text()) < 18 {
+		} else if len(strings.TrimSpace(entryFormAppID.Text())) < 18 {
 			buttonSaveConfig.Enable()
 			ui.MsgBoxError(Win, "ERROR!", "App ID is not valid.")
 			return
+		} else {
+			Config.AppID = strings.TrimSpace(entryFormAppID.Text())
 		}
 
-		_, err = strconv.Atoi(entryRPCpartyID.Text())
-		if err != nil {
-			buttonSaveConfig.Enable()
-			ui.MsgBoxError(Win, "ERROR!", "Party ID field has to be number.")
-			return
-		}
-		if len(entryRPCpartyID.Text()) < 18 {
-			buttonSaveConfig.Enable()
-			ui.MsgBoxError(Win, "ERROR!", "Party ID is not valid.")
-			return
+		if len(strings.TrimSpace(entryRPCpartyID.Text())) > 0 {
+			_, err = strconv.Atoi(strings.TrimSpace(entryRPCpartyID.Text()))
+			if err != nil {
+				buttonSaveConfig.Enable()
+				ui.MsgBoxError(Win, "ERROR!", "Party ID field has to be number.")
+				return
+			} else if len(strings.TrimSpace(entryRPCpartyID.Text())) < 18 {
+				buttonSaveConfig.Enable()
+				ui.MsgBoxError(Win, "ERROR!", "Party ID is not valid.")
+				return
+			} else {
+				Config.RPC.Party.ID = entryRPCpartyID.Text()
+			}
+		} else {
+			Config.RPC.Party.ID = ""
 		}
 
 		// Party Players
-		numP, err := strconv.Atoi(entryRPCpartyPlayers.Text())
-		if err != nil {
-			buttonSaveConfig.Enable()
-			ui.MsgBoxError(Win, "ERROR!", "Party Players field has to be number.")
-			return
+		if len(strings.TrimSpace(entryRPCpartyPlayers.Text())) > 0 {
+			numP, err := strconv.Atoi(strings.TrimSpace(entryRPCpartyPlayers.Text()))
+			if err != nil {
+				buttonSaveConfig.Enable()
+				ui.MsgBoxError(Win, "ERROR!", "Party Players field has to be number.")
+				return
+			} else {
+				Config.RPC.Party.Players = numP
+			}
+		} else {
+			Config.RPC.Party.Players = 0
 		}
-		Config.RPC.Party.Players = numP
-		numX, err := strconv.Atoi(entryRPCpartyMaxPLayers.Text())
-		if err != nil {
-			buttonSaveConfig.Enable()
-			ui.MsgBoxError(Win, "ERROR!", "Party Max Players field has to be number.")
-			return
+
+		if len(strings.TrimSpace(entryRPCpartyMaxPLayers.Text())) > 0 {
+			numX, err := strconv.Atoi(strings.TrimSpace(entryRPCpartyMaxPLayers.Text()))
+			if err != nil {
+				buttonSaveConfig.Enable()
+				ui.MsgBoxError(Win, "ERROR!", "Party Max Players field has to be number.")
+				return
+			} else {
+				Config.RPC.Party.MaxPlayers = numX
+			}
+		} else {
+			Config.RPC.Party.MaxPlayers = 0
 		}
-		Config.RPC.Party.MaxPlayers = numX
 
 		// Timestamps
-		tmS, err := time.Parse(timeLayout, entryRPCtimestampsStart.Text())
-		if err != nil {
-			buttonSaveConfig.Enable()
-			ui.MsgBoxError(Win, "ERROR!", "Start Timestamp is not valid.")
-			return
+		if len(strings.TrimSpace(entryRPCtimestampsStart.Text())) > 0 {
+			tmS, err := time.Parse(timeLayout, strings.TrimSpace(entryRPCtimestampsStart.Text()))
+			if err != nil {
+				buttonSaveConfig.Enable()
+				ui.MsgBoxError(Win, "ERROR!", "Start Timestamp is not valid.")
+				return
+			} else {
+				Config.RPC.Timestamps.Start = &tmS
+			}
+		} else {
+			Config.RPC.Timestamps.Start = nil
 		}
-		Config.RPC.Timestamps.Start = &tmS
-		tmE, err := time.Parse(timeLayout, entryRPCtimestampsEnd.Text())
-		if err != nil {
-			buttonSaveConfig.Enable()
-			ui.MsgBoxError(Win, "ERROR!", "End Timestamp is not valid.")
-			return
+		if len(strings.TrimSpace(entryRPCtimestampsEnd.Text())) > 0 {
+			tmE, err := time.Parse(timeLayout, strings.TrimSpace(entryRPCtimestampsEnd.Text()))
+			if err != nil {
+				buttonSaveConfig.Enable()
+				ui.MsgBoxError(Win, "ERROR!", "End Timestamp is not valid.")
+				return
+			} else {
+				Config.RPC.Timestamps.End = &tmE
+			}
+		} else {
+			Config.RPC.Timestamps.End = nil
 		}
-		Config.RPC.Timestamps.End = &tmE
 
 		// Texts
-		Config.AppID = entryFormAppID.Text()
 		Config.RPC.Details = entryRPCdetails.Text()
 		Config.RPC.State = entryRPCstate.Text()
 		Config.RPC.LargeImage = entryRPCimagesLarge.Text()
 		Config.RPC.LargeText = entryRPCimagesLargeText.Text()
 		Config.RPC.SmallImage = entryRPCimagesSmall.Text()
 		Config.RPC.SmallText = entryRPCimagesSmallText.Text()
-		Config.RPC.Party.ID = entryRPCpartyID.Text()
 		Config.RPC.Buttons[0].Label = entryRPCbuttonsFirstLabel.Text()
 		Config.RPC.Buttons[0].Url = entryRPCbuttonsFirstURL.Text()
 		Config.RPC.Buttons[1].Label = entryRPCbuttonsSecondLabel.Text()
@@ -228,12 +266,29 @@ func GUIsetup() {
 		entryRPCpartyID.SetText(Config.RPC.Party.ID)
 		entryRPCpartyPlayers.SetText(strconv.Itoa(Config.RPC.Party.Players))
 		entryRPCpartyMaxPLayers.SetText(strconv.Itoa(Config.RPC.Party.MaxPlayers))
-		entryRPCtimestampsStart.SetText(Config.RPC.Timestamps.Start.Local().Format(timeLayout))
-		entryRPCtimestampsEnd.SetText(Config.RPC.Timestamps.End.Local().Format(timeLayout))
+		if Config.RPC.Timestamps.Start == nil {
+			entryRPCtimestampsStart.SetText("")
+		} else {
+			entryRPCtimestampsStart.SetText(Config.RPC.Timestamps.Start.Local().Format(timeLayout))
+		}
+		if Config.RPC.Timestamps.End == nil {
+			entryRPCtimestampsEnd.SetText("")
+		} else {
+			entryRPCtimestampsEnd.SetText(Config.RPC.Timestamps.End.Local().Format(timeLayout))
+		}
 		entryRPCbuttonsFirstLabel.SetText(Config.RPC.Buttons[0].Label)
 		entryRPCbuttonsFirstURL.SetText(Config.RPC.Buttons[0].Url)
 		entryRPCbuttonsSecondLabel.SetText(Config.RPC.Buttons[1].Label)
 		entryRPCbuttonsSecondURL.SetText(Config.RPC.Buttons[1].Url)
+
+		if RPCActive {
+			if err := client.SetActivity(Config.RPC); err != nil {
+				log.Println(err)
+				RPCActive = false
+				GUIch <- "buttonStart"
+				ui.MsgBoxError(Win, "ERROR!", "Can't update RPC")
+			}
+		}
 
 		buttonReloadConfig.Enable()
 	})
@@ -270,6 +325,12 @@ func GUIsetup() {
 	container.Append(containerButtons, false)
 
 	Win.Show()
+
+	if ConfigCurropted {
+		ui.MsgBox(Win, "Warning!", "Config file was curropted and created new one.")
+		ConfigCurropted = false
+	}
+
 	go GUIloop()
 }
 
