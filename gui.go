@@ -193,8 +193,8 @@ func GUIsetup() {
 					Config.RPC.Party.Players = numP
 				}
 			} else {
-				Config.RPC.Party.Players = 0
-				entryRPCpartyPlayers.SetText("0")
+				Config.RPC.Party.Players = 1
+				entryRPCpartyPlayers.SetText("1")
 			}
 
 			if len(strings.TrimSpace(entryRPCpartyMaxPLayers.Text())) > 0 {
@@ -207,8 +207,8 @@ func GUIsetup() {
 					Config.RPC.Party.MaxPlayers = numX
 				}
 			} else {
-				Config.RPC.Party.MaxPlayers = 0
-				entryRPCpartyMaxPLayers.SetText("0")
+				Config.RPC.Party.MaxPlayers = 10
+				entryRPCpartyMaxPLayers.SetText("10")
 			}
 		}
 
@@ -310,9 +310,17 @@ func GUIsetup() {
 		entryRPCimagesLargeText.SetText(Config.RPC.LargeText)
 		entryRPCimagesSmall.SetText(Config.RPC.SmallImage)
 		entryRPCimagesSmallText.SetText(Config.RPC.SmallText)
-		entryRPCpartyID.SetText(Config.RPC.Party.ID)
-		entryRPCpartyPlayers.SetText(strconv.Itoa(Config.RPC.Party.Players))
-		entryRPCpartyMaxPLayers.SetText(strconv.Itoa(Config.RPC.Party.MaxPlayers))
+
+		if Config.RPC.Party == nil {
+			entryRPCpartyID.SetText("")
+			entryRPCpartyPlayers.SetText("")
+			entryRPCpartyMaxPLayers.SetText("")
+		} else {
+			entryRPCpartyID.SetText(Config.RPC.Party.ID)
+			entryRPCpartyPlayers.SetText(strconv.Itoa(Config.RPC.Party.Players))
+			entryRPCpartyMaxPLayers.SetText(strconv.Itoa(Config.RPC.Party.MaxPlayers))
+		}
+
 		if Config.RPC.Timestamps.Start == nil {
 			entryRPCtimestampsStart.SetText("")
 		} else {
@@ -323,10 +331,23 @@ func GUIsetup() {
 		} else {
 			entryRPCtimestampsEnd.SetText(Config.RPC.Timestamps.End.Local().Format(timeLayout))
 		}
-		entryRPCbuttonsFirstLabel.SetText(Config.RPC.Buttons[0].Label)
-		entryRPCbuttonsFirstURL.SetText(Config.RPC.Buttons[0].Url)
-		entryRPCbuttonsSecondLabel.SetText(Config.RPC.Buttons[1].Label)
-		entryRPCbuttonsSecondURL.SetText(Config.RPC.Buttons[1].Url)
+
+		if Config.RPC.Buttons == nil {
+			entryRPCbuttonsFirstLabel.SetText("")
+			entryRPCbuttonsFirstURL.SetText("")
+			entryRPCbuttonsSecondLabel.SetText("")
+			entryRPCbuttonsSecondURL.SetText("")
+		} else {
+			if len(Config.RPC.Buttons) < 2 && len(Config.RPC.Buttons) > 0 {
+				entryRPCbuttonsFirstLabel.SetText(Config.RPC.Buttons[0].Label)
+				entryRPCbuttonsFirstURL.SetText(Config.RPC.Buttons[0].Url)
+			} else {
+				entryRPCbuttonsFirstLabel.SetText(Config.RPC.Buttons[0].Label)
+				entryRPCbuttonsFirstURL.SetText(Config.RPC.Buttons[0].Url)
+				entryRPCbuttonsSecondLabel.SetText(Config.RPC.Buttons[1].Label)
+				entryRPCbuttonsSecondURL.SetText(Config.RPC.Buttons[1].Url)
+			}
+		}
 
 		if RPCActive {
 			if err := client.SetActivity(Config.RPC); err != nil {

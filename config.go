@@ -34,9 +34,9 @@ var (
 			SmallImage: "discord-logo",
 			SmallText:  "Also, this is a Discord Logo",
 			Party: &client.Party{
-				ID:         "123456789123456789",
+				ID:         "111111111111111111",
 				Players:    1,
-				MaxPlayers: 100,
+				MaxPlayers: 10,
 			},
 			Timestamps: &client.Timestamps{
 				Start: &nowSample,
@@ -72,7 +72,10 @@ func ConfigInit() {
 		ConfigDir = homeDir + "/.config/" + AppName + "/"
 	}
 
-	// Load Config
+	ConfigReload()
+}
+
+func ConfigReload() {
 	configFileBuf := bytes.NewBuffer(nil)
 	var configFile *os.File
 	configFile, err := os.Open(ConfigDir + ConfigFileName)
@@ -156,26 +159,6 @@ func ConfigInit() {
 		ConfigReload()
 	}
 	log.Println("Config: ", Config)
-}
-
-func ConfigReload() {
-	configFileBuf := bytes.NewBuffer(nil)
-	configFile, err := os.Open(ConfigDir + ConfigFileName)
-	if err != nil {
-		if !os.IsExist(err) {
-		} else {
-			log.Fatalln(err)
-		}
-	} else {
-		io.Copy(configFileBuf, configFile)
-		if err := json.Unmarshal(configFileBuf.Bytes(), &Config); err != nil {
-			log.Fatalln(err)
-			return
-		}
-	}
-
-	configFile.Close()
-	log.Println("Config reloaded.")
 }
 
 func ConfigSave() {
