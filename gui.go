@@ -138,22 +138,62 @@ func GUIsetup() {
 		log.Println("Current time copied to the clipboard.")
 	})
 
+	// Button Save Config
 	buttonSaveConfig := ui.NewButton("   Save Config   ")
 	buttonSaveConfig.OnClicked(func(*ui.Button) {
 		buttonSaveConfig.Disable()
 
 		// App ID
 		_, err := strconv.Atoi(strings.TrimSpace(entryFormAppID.Text()))
-		if err != nil {
+		if len(strings.TrimSpace(entryFormAppID.Text())) < 1 {
+			buttonSaveConfig.Enable()
+			ui.MsgBoxError(Win, "ERROR!", "App ID field can not be blank.")
+			return
+		} else if err != nil {
 			buttonSaveConfig.Enable()
 			ui.MsgBoxError(Win, "ERROR!", "App ID field has to be number.")
 			return
-		} else if len(strings.TrimSpace(entryFormAppID.Text())) < 18 {
+		} else if len(strings.TrimSpace(entryFormAppID.Text())) < 18 || len(strings.TrimSpace(entryFormAppID.Text())) > 18 {
 			buttonSaveConfig.Enable()
 			ui.MsgBoxError(Win, "ERROR!", "App ID is not valid.")
 			return
 		} else {
 			Config.AppID = strings.TrimSpace(entryFormAppID.Text())
+		}
+
+		// Texts
+		if len(strings.TrimSpace(entryRPCdetails.Text())) < 1 {
+			buttonSaveConfig.Enable()
+			ui.MsgBoxError(Win, "ERROR!", "Details field can not be blank.")
+			return
+		} else {
+			Config.RPC.Details = entryRPCdetails.Text()
+		}
+		if len(strings.TrimSpace(entryRPCstate.Text())) < 1 {
+			buttonSaveConfig.Enable()
+			ui.MsgBoxError(Win, "ERROR!", "State field can not be blank.")
+			return
+		} else {
+			Config.RPC.State = entryRPCstate.Text()
+		}
+
+		// Images
+		Config.RPC.LargeImage = entryRPCimagesLarge.Text()
+		if len(strings.TrimSpace(entryRPCimagesLarge.Text())) > 0 && len(strings.TrimSpace(entryRPCimagesLargeText.Text())) < 1 {
+			buttonSaveConfig.Enable()
+			ui.MsgBoxError(Win, "ERROR!", "Large Image Text field can not be blank if Large Image is set.")
+			return
+		} else {
+			Config.RPC.LargeText = entryRPCimagesLargeText.Text()
+		}
+
+		Config.RPC.SmallImage = entryRPCimagesSmall.Text()
+		if len(strings.TrimSpace(entryRPCimagesSmall.Text())) > 0 && len(strings.TrimSpace(entryRPCimagesSmallText.Text())) < 1 {
+			buttonSaveConfig.Enable()
+			ui.MsgBoxError(Win, "ERROR!", "Small Image Text field can not be blank if Small Image is set.")
+			return
+		} else {
+			Config.RPC.SmallText = entryRPCimagesSmallText.Text()
 		}
 
 		// Party ID
@@ -163,7 +203,7 @@ func GUIsetup() {
 				buttonSaveConfig.Enable()
 				ui.MsgBoxError(Win, "ERROR!", "Party ID field has to be number.")
 				return
-			} else if len(strings.TrimSpace(entryRPCpartyID.Text())) < 18 {
+			} else if len(strings.TrimSpace(entryRPCpartyID.Text())) < 18 || len(strings.TrimSpace(entryRPCpartyID.Text())) > 18 {
 				buttonSaveConfig.Enable()
 				ui.MsgBoxError(Win, "ERROR!", "Party ID is not valid.")
 				return
@@ -189,6 +229,10 @@ func GUIsetup() {
 					buttonSaveConfig.Enable()
 					ui.MsgBoxError(Win, "ERROR!", "Party Players field has to be number.")
 					return
+				} else if numP < 1 {
+					buttonSaveConfig.Enable()
+					ui.MsgBoxError(Win, "ERROR!", "Party Players field has to be higher than 0.")
+					return
 				} else {
 					Config.RPC.Party.Players = numP
 				}
@@ -198,10 +242,19 @@ func GUIsetup() {
 			}
 
 			if len(strings.TrimSpace(entryRPCpartyMaxPLayers.Text())) > 0 {
+				numP, _ := strconv.Atoi(strings.TrimSpace(entryRPCpartyPlayers.Text()))
 				numX, err := strconv.Atoi(strings.TrimSpace(entryRPCpartyMaxPLayers.Text()))
 				if err != nil {
 					buttonSaveConfig.Enable()
 					ui.MsgBoxError(Win, "ERROR!", "Party Max Players field has to be number.")
+					return
+				} else if numX < 1 {
+					buttonSaveConfig.Enable()
+					ui.MsgBoxError(Win, "ERROR!", "Party Max Players field has to be higher than 0.")
+					return
+				} else if numP > numX {
+					buttonSaveConfig.Enable()
+					ui.MsgBoxError(Win, "ERROR!", "Party Players field can not be higher than Party Max Players field.")
 					return
 				} else {
 					Config.RPC.Party.MaxPlayers = numX
@@ -231,6 +284,10 @@ func GUIsetup() {
 				buttonSaveConfig.Enable()
 				ui.MsgBoxError(Win, "ERROR!", "End Timestamp is not valid.")
 				return
+			} else if len(strings.TrimSpace(entryRPCtimestampsStart.Text())) < 1 {
+				buttonSaveConfig.Enable()
+				ui.MsgBoxError(Win, "ERROR!", "Start Timestamp can not be blank if End Timestamp is set.")
+				return
 			} else {
 				Config.RPC.Timestamps.End = &tmE
 			}
@@ -239,11 +296,33 @@ func GUIsetup() {
 		}
 
 		// Buttons
-		if strings.TrimSpace(entryRPCbuttonsFirstLabel.Text()) == "" && strings.TrimSpace(entryRPCbuttonsFirstURL.Text()) == "" && strings.TrimSpace(entryRPCbuttonsSecondLabel.Text()) == "" && strings.TrimSpace(entryRPCbuttonsSecondURL.Text()) == "" {
+		if len(strings.TrimSpace(entryRPCbuttonsFirstLabel.Text())) < 1 && len(strings.TrimSpace(entryRPCbuttonsFirstURL.Text())) < 1 && len(strings.TrimSpace(entryRPCbuttonsSecondLabel.Text())) < 1 && len(strings.TrimSpace(entryRPCbuttonsSecondURL.Text())) < 1 {
 			Config.RPC.Buttons = nil
 			entryRPCbuttonsFirstLabel.SetText("")
 			entryRPCbuttonsFirstURL.SetText("")
-		} else if strings.TrimSpace(entryRPCbuttonsFirstLabel.Text()) == "" && strings.TrimSpace(entryRPCbuttonsFirstURL.Text()) == "" {
+		} else if len(strings.TrimSpace(entryRPCbuttonsFirstLabel.Text())) < 1 || len(strings.TrimSpace(entryRPCbuttonsFirstURL.Text())) < 1 {
+			buttonSaveConfig.Enable()
+			ui.MsgBoxError(Win, "ERROR!", "Both First Button fields have to be filled.")
+			return
+		} else if len(strings.TrimSpace(entryRPCbuttonsSecondLabel.Text())) < 1 || len(strings.TrimSpace(entryRPCbuttonsSecondURL.Text())) < 1 {
+			buttonSaveConfig.Enable()
+			ui.MsgBoxError(Win, "ERROR!", "Both Second Button fields have to be filled.")
+			return
+		} else if len(strings.TrimSpace(entryRPCbuttonsFirstLabel.Text())) < 1 && len(strings.TrimSpace(entryRPCbuttonsFirstURL.Text())) < 1 {
+			if len(strings.TrimSpace(entryRPCbuttonsFirstURL.Text())) > 0 {
+				if !strings.HasPrefix(strings.TrimSpace(entryRPCbuttonsFirstURL.Text()), "http://") && !strings.HasPrefix(strings.TrimSpace(entryRPCbuttonsFirstURL.Text()), "https://") {
+					buttonSaveConfig.Enable()
+					ui.MsgBoxError(Win, "ERROR!", "Button URL fields must start with \"https://\" or \"http://\"")
+					return
+				}
+			}
+			if len(strings.TrimSpace(entryRPCbuttonsSecondURL.Text())) > 0 {
+				if !strings.HasPrefix(strings.TrimSpace(entryRPCbuttonsSecondURL.Text()), "http://") && !strings.HasPrefix(strings.TrimSpace(entryRPCbuttonsSecondURL.Text()), "https://") {
+					buttonSaveConfig.Enable()
+					ui.MsgBoxError(Win, "ERROR!", "Button URL fields must start with \"https://\" or \"http://\"")
+					return
+				}
+			}
 			Config.RPC.Buttons = []*client.Button{
 				{
 					Label: entryRPCbuttonsSecondLabel.Text(),
@@ -254,7 +333,22 @@ func GUIsetup() {
 			entryRPCbuttonsFirstURL.SetText(entryRPCbuttonsSecondURL.Text())
 			entryRPCbuttonsSecondLabel.SetText("")
 			entryRPCbuttonsSecondURL.SetText("")
-		} else if strings.TrimSpace(entryRPCbuttonsSecondLabel.Text()) == "" && strings.TrimSpace(entryRPCbuttonsSecondURL.Text()) == "" {
+		} else if len(strings.TrimSpace(entryRPCbuttonsSecondLabel.Text())) < 1 && len(strings.TrimSpace(entryRPCbuttonsSecondURL.Text())) < 1 {
+			if len(strings.TrimSpace(entryRPCbuttonsFirstURL.Text())) > 0 {
+				if !strings.HasPrefix(strings.TrimSpace(entryRPCbuttonsFirstURL.Text()), "http://") && !strings.HasPrefix(strings.TrimSpace(entryRPCbuttonsFirstURL.Text()), "https://") {
+					buttonSaveConfig.Enable()
+					ui.MsgBoxError(Win, "ERROR!", "Button URL fields must start with \"https://\" or \"http://\"")
+					return
+				}
+			}
+			if len(strings.TrimSpace(entryRPCbuttonsSecondURL.Text())) > 0 {
+				if !strings.HasPrefix(strings.TrimSpace(entryRPCbuttonsSecondURL.Text()), "http://") && !strings.HasPrefix(strings.TrimSpace(entryRPCbuttonsSecondURL.Text()), "https://") {
+					buttonSaveConfig.Enable()
+					ui.MsgBoxError(Win, "ERROR!", "Button URL fields must start with \"https://\" or \"http://\"")
+					return
+				}
+			}
+
 			Config.RPC.Buttons = []*client.Button{
 				{
 					Label: entryRPCbuttonsFirstLabel.Text(),
@@ -264,6 +358,21 @@ func GUIsetup() {
 			entryRPCbuttonsSecondLabel.SetText("")
 			entryRPCbuttonsSecondURL.SetText("")
 		} else {
+			if len(strings.TrimSpace(entryRPCbuttonsFirstURL.Text())) > 0 {
+				if !strings.HasPrefix(strings.TrimSpace(entryRPCbuttonsFirstURL.Text()), "http://") && !strings.HasPrefix(strings.TrimSpace(entryRPCbuttonsFirstURL.Text()), "https://") {
+					buttonSaveConfig.Enable()
+					ui.MsgBoxError(Win, "ERROR!", "Button URL fields must start with \"https://\" or \"http://\"")
+					return
+				}
+			}
+			if len(strings.TrimSpace(entryRPCbuttonsSecondURL.Text())) > 0 {
+				if !strings.HasPrefix(strings.TrimSpace(entryRPCbuttonsSecondURL.Text()), "http://") && !strings.HasPrefix(strings.TrimSpace(entryRPCbuttonsSecondURL.Text()), "https://") {
+					buttonSaveConfig.Enable()
+					ui.MsgBoxError(Win, "ERROR!", "Button URL fields must start with \"https://\" or \"http://\"")
+					return
+				}
+			}
+
 			Config.RPC.Buttons = []*client.Button{
 				{
 					Label: entryRPCbuttonsFirstLabel.Text(),
@@ -275,14 +384,6 @@ func GUIsetup() {
 				},
 			}
 		}
-
-		// Texts
-		Config.RPC.Details = entryRPCdetails.Text()
-		Config.RPC.State = entryRPCstate.Text()
-		Config.RPC.LargeImage = entryRPCimagesLarge.Text()
-		Config.RPC.LargeText = entryRPCimagesLargeText.Text()
-		Config.RPC.SmallImage = entryRPCimagesSmall.Text()
-		Config.RPC.SmallText = entryRPCimagesSmallText.Text()
 
 		ConfigSave()
 
@@ -298,6 +399,7 @@ func GUIsetup() {
 		buttonSaveConfig.Enable()
 	})
 
+	// Button Reload Config
 	buttonReloadConfig := ui.NewButton("   Reload Config   ")
 	buttonReloadConfig.OnClicked(func(*ui.Button) {
 		buttonReloadConfig.Disable()
@@ -395,7 +497,7 @@ func GUIsetup() {
 	Win.Show()
 
 	if ConfigCurropted {
-		ui.MsgBox(Win, "Warning!", "Config file was curropted and created new one.")
+		ui.MsgBox(Win, "Warning!", "Config file was corrupted and created new one.")
 		ConfigCurropted = false
 	}
 

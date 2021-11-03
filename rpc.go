@@ -22,7 +22,7 @@ func RPCStart() {
 		log.Println(err)
 		RPCActive = false
 		GUIch <- "buttonStart"
-		ui.MsgBoxError(Win, "ERROR!", "Can't login to Discord RPC")
+		ui.MsgBoxError(Win, "ERROR!", "Can not login to Discord RPC")
 		return
 	}
 
@@ -36,7 +36,7 @@ func RPCStart() {
 				log.Println(err)
 				RPCActive = false
 				GUIch <- "buttonStart"
-				ui.MsgBoxError(Win, "ERROR!", "Can't update RPC")
+				ui.MsgBoxError(Win, "ERROR!", "Can not update RPC")
 				return
 			}
 			time.Sleep(time.Second * 12)

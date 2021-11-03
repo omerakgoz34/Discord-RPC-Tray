@@ -10,7 +10,7 @@ import (
 
 const (
 	AppName        = "Discord RPC Tray"
-	AppVersion     = "1.1.0-pre"
+	AppVersion     = "1.1.0"
 	AppProjectPage = "https://github.com/omerakgoz34/Discord-RPC-Tray"
 )
 
