@@ -6,7 +6,7 @@
     "architecture": {
         "64bit": {
             "url": "https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.1.0/Discord-RPC-Tray_v1.1.0_win64.zip",
-            "hash": "57f08345b6eaf1e2f33b670b56fa61f3594f520e8e2427ad1d4017745017a8fb"
+            "hash": "41b973ad6cd6f56430ba2cbd5a0ee195cbc5350e82d312ba80eefcb022098383"
         }
     },
     "bin": "Discord-RPC-Tray.exe",
