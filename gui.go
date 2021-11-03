@@ -142,7 +142,7 @@ func GUIsetup() {
 	buttonSaveConfig.OnClicked(func(*ui.Button) {
 		buttonSaveConfig.Disable()
 
-		// IDs
+		// App ID
 		_, err := strconv.Atoi(strings.TrimSpace(entryFormAppID.Text()))
 		if err != nil {
 			buttonSaveConfig.Enable()
@@ -156,6 +156,7 @@ func GUIsetup() {
 			Config.AppID = strings.TrimSpace(entryFormAppID.Text())
 		}
 
+		// Party ID
 		if len(strings.TrimSpace(entryRPCpartyID.Text())) > 0 {
 			_, err = strconv.Atoi(strings.TrimSpace(entryRPCpartyID.Text()))
 			if err != nil {
@@ -167,37 +168,48 @@ func GUIsetup() {
 				ui.MsgBoxError(Win, "ERROR!", "Party ID is not valid.")
 				return
 			} else {
-				Config.RPC.Party.ID = entryRPCpartyID.Text()
+				if Config.RPC.Party == nil {
+					Config.RPC.Party = &client.Party{}
+					Config.RPC.Party.ID = strings.TrimSpace(entryRPCpartyID.Text())
+				} else {
+					Config.RPC.Party.ID = strings.TrimSpace(entryRPCpartyID.Text())
+				}
 			}
 		} else {
-			Config.RPC.Party.ID = ""
+			Config.RPC.Party = nil
+			entryRPCpartyPlayers.SetText("")
+			entryRPCpartyMaxPLayers.SetText("")
 		}
 
 		// Party Players
-		if len(strings.TrimSpace(entryRPCpartyPlayers.Text())) > 0 {
-			numP, err := strconv.Atoi(strings.TrimSpace(entryRPCpartyPlayers.Text()))
-			if err != nil {
-				buttonSaveConfig.Enable()
-				ui.MsgBoxError(Win, "ERROR!", "Party Players field has to be number.")
-				return
+		if Config.RPC.Party != nil {
+			if len(strings.TrimSpace(entryRPCpartyPlayers.Text())) > 0 {
+				numP, err := strconv.Atoi(strings.TrimSpace(entryRPCpartyPlayers.Text()))
+				if err != nil {
+					buttonSaveConfig.Enable()
+					ui.MsgBoxError(Win, "ERROR!", "Party Players field has to be number.")
+					return
+				} else {
+					Config.RPC.Party.Players = numP
+				}
 			} else {
-				Config.RPC.Party.Players = numP
+				Config.RPC.Party.Players = 0
+				entryRPCpartyPlayers.SetText("0")
 			}
-		} else {
-			Config.RPC.Party.Players = 0
-		}
 
-		if len(strings.TrimSpace(entryRPCpartyMaxPLayers.Text())) > 0 {
-			numX, err := strconv.Atoi(strings.TrimSpace(entryRPCpartyMaxPLayers.Text()))
-			if err != nil {
-				buttonSaveConfig.Enable()
-				ui.MsgBoxError(Win, "ERROR!", "Party Max Players field has to be number.")
-				return
+			if len(strings.TrimSpace(entryRPCpartyMaxPLayers.Text())) > 0 {
+				numX, err := strconv.Atoi(strings.TrimSpace(entryRPCpartyMaxPLayers.Text()))
+				if err != nil {
+					buttonSaveConfig.Enable()
+					ui.MsgBoxError(Win, "ERROR!", "Party Max Players field has to be number.")
+					return
+				} else {
+					Config.RPC.Party.MaxPlayers = numX
+				}
 			} else {
-				Config.RPC.Party.MaxPlayers = numX
+				Config.RPC.Party.MaxPlayers = 0
+				entryRPCpartyMaxPLayers.SetText("0")
 			}
-		} else {
-			Config.RPC.Party.MaxPlayers = 0
 		}
 
 		// Timestamps
@@ -226,6 +238,44 @@ func GUIsetup() {
 			Config.RPC.Timestamps.End = nil
 		}
 
+		// Buttons
+		if strings.TrimSpace(entryRPCbuttonsFirstLabel.Text()) == "" && strings.TrimSpace(entryRPCbuttonsFirstURL.Text()) == "" && strings.TrimSpace(entryRPCbuttonsSecondLabel.Text()) == "" && strings.TrimSpace(entryRPCbuttonsSecondURL.Text()) == "" {
+			Config.RPC.Buttons = nil
+			entryRPCbuttonsFirstLabel.SetText("")
+			entryRPCbuttonsFirstURL.SetText("")
+		} else if strings.TrimSpace(entryRPCbuttonsFirstLabel.Text()) == "" && strings.TrimSpace(entryRPCbuttonsFirstURL.Text()) == "" {
+			Config.RPC.Buttons = []*client.Button{
+				{
+					Label: entryRPCbuttonsSecondLabel.Text(),
+					Url:   entryRPCbuttonsSecondURL.Text(),
+				},
+			}
+			entryRPCbuttonsFirstLabel.SetText(entryRPCbuttonsSecondLabel.Text())
+			entryRPCbuttonsFirstURL.SetText(entryRPCbuttonsSecondURL.Text())
+			entryRPCbuttonsSecondLabel.SetText("")
+			entryRPCbuttonsSecondURL.SetText("")
+		} else if strings.TrimSpace(entryRPCbuttonsSecondLabel.Text()) == "" && strings.TrimSpace(entryRPCbuttonsSecondURL.Text()) == "" {
+			Config.RPC.Buttons = []*client.Button{
+				{
+					Label: entryRPCbuttonsFirstLabel.Text(),
+					Url:   entryRPCbuttonsFirstURL.Text(),
+				},
+			}
+			entryRPCbuttonsSecondLabel.SetText("")
+			entryRPCbuttonsSecondURL.SetText("")
+		} else {
+			Config.RPC.Buttons = []*client.Button{
+				{
+					Label: entryRPCbuttonsFirstLabel.Text(),
+					Url:   entryRPCbuttonsFirstURL.Text(),
+				},
+				{
+					Label: entryRPCbuttonsSecondLabel.Text(),
+					Url:   entryRPCbuttonsSecondURL.Text(),
+				},
+			}
+		}
+
 		// Texts
 		Config.RPC.Details = entryRPCdetails.Text()
 		Config.RPC.State = entryRPCstate.Text()
@@ -233,10 +283,7 @@ func GUIsetup() {
 		Config.RPC.LargeText = entryRPCimagesLargeText.Text()
 		Config.RPC.SmallImage = entryRPCimagesSmall.Text()
 		Config.RPC.SmallText = entryRPCimagesSmallText.Text()
-		Config.RPC.Buttons[0].Label = entryRPCbuttonsFirstLabel.Text()
-		Config.RPC.Buttons[0].Url = entryRPCbuttonsFirstURL.Text()
-		Config.RPC.Buttons[1].Label = entryRPCbuttonsSecondLabel.Text()
-		Config.RPC.Buttons[1].Url = entryRPCbuttonsSecondURL.Text()
+
 		ConfigSave()
 
 		if RPCActive {
