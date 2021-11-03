@@ -14,11 +14,11 @@ Dil: [EN](/README.md) [TR]
 * [Linux x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.1.0/Discord-RPC-Tray_v1.1.0_linux64.zip) (test edilmedi)
 * [macOS x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.1.0/Discord-RPC-Tray_v1.1.0_macos64.app.zip) (test edilmedi) ([@elvodqa](https://github.com/elvodqa)'ya teşekkürler)
 
-## Ekran Görüntüleri (eski)
+## Ekran Görüntüleri
 
-![Screenshot_240](https://user-images.githubusercontent.com/49201485/120932531-e7ed1800-c6fe-11eb-9d3b-dd016403f6df.png)  
-![Screenshot_237](https://user-images.githubusercontent.com/49201485/120929660-8757de00-c6f2-11eb-87b8-74cbab6ecb02.png)  
-![Screenshot_238](https://user-images.githubusercontent.com/49201485/120929803-2b418980-c6f3-11eb-8fd2-7598656fe9ec.png)  
+![Screenshot_66](https://user-images.githubusercontent.com/49201485/140165938-701e88ab-fd12-4560-ad39-a5b6cf5560c1.png)  
+![Screenshot_67](https://user-images.githubusercontent.com/49201485/140166368-ade1880a-68f0-4ea7-8b46-2738f9851a2e.png)  
+![Screenshot_62](https://user-images.githubusercontent.com/49201485/140166003-c275fa33-aa40-4bd5-93c4-590ade3488b1.png)
 
 ## Özellikler
 
