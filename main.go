@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-        "runtime"
 
 	"github.com/andlabs/ui"
 	_ "github.com/andlabs/ui/winmanifest"
@@ -18,7 +17,6 @@ const (
 var QuitCh = make(chan bool, 1)
 
 func main() {
-        runtime.GOMAXPROCS(1)
 	log.SetPrefix("DEBUG >>> ")
 
 	ConfigInit()
