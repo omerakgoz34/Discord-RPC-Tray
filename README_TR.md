@@ -14,9 +14,9 @@ Dil: [EN](/README.md) [TR]
 * macOS: v10.8 veya üstü
 
 ## İndirmeler (v1.1.0)
-* [Windows x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.1.0/Discord-RPC-Tray_v1.1.0_win64.zip) ([scoop dosyası](https://github.com/omerakgoz34/Discord-RPC-Tray/blob/d3f35ba40ab0b3c6ea2e9b9918b2135e247ee501/discord-rpc-tray.json))
-* [Linux x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.1.0/Discord-RPC-Tray_v1.1.0_linux64.zip) (test edilmedi)
-* [macOS x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.1.0/Discord-RPC-Tray_v1.1.0_macos64.app.zip) (test edilmedi) ([@elvodqa](https://github.com/elvodqa)'ya teşekkürler)
+* [Windows x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.1.0/Discord-RPC-Tray_v1.1.0_win64.zip) ([Scoop Bucket](https://github.com/omerakgoz34/scoop-bucket))
+* [Linux x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.1.0/Discord-RPC-Tray_v1.1.0_linux64.zip)
+* [macOS x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.1.0/Discord-RPC-Tray_v1.1.0_macos64.app.zip) ([@elvodqa](https://github.com/elvodqa)'ya teşekkürler)
 
 ## Ekran Görüntüleri
 ![Screenshot_66](https://user-images.githubusercontent.com/49201485/140165938-701e88ab-fd12-4560-ad39-a5b6cf5560c1.png)  

@@ -14,9 +14,9 @@ Most lightweight app to make custom Discord "Playing" statuses!
 * macOS: v10.8 or newer
 
 ## Downloads (v1.1.0)
-* [Windows x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.1.0/Discord-RPC-Tray_v1.1.0_win64.zip) ([scoop file](https://github.com/omerakgoz34/Discord-RPC-Tray/blob/d3f35ba40ab0b3c6ea2e9b9918b2135e247ee501/discord-rpc-tray.json))
-* [Linux x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.1.0/Discord-RPC-Tray_v1.1.0_linux64.zip) (not tested)
-* [macOS x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.1.0/Discord-RPC-Tray_v1.1.0_macos64.app.zip) (not tested) (thanks to [@elvodqa](https://github.com/elvodqa))
+* [Windows x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.1.0/Discord-RPC-Tray_v1.1.0_win64.zip) ([Scoop Bucket](https://github.com/omerakgoz34/scoop-bucket))
+* [Linux x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.1.0/Discord-RPC-Tray_v1.1.0_linux64.zip)
+* [macOS x64](https://github.com/omerakgoz34/Discord-RPC-Tray/releases/download/v1.1.0/Discord-RPC-Tray_v1.1.0_macos64.app.zip) (thanks to [@elvodqa](https://github.com/elvodqa))
 
 ## Screenshots
 ![Screenshot_66](https://user-images.githubusercontent.com/49201485/140165938-701e88ab-fd12-4560-ad39-a5b6cf5560c1.png)  
